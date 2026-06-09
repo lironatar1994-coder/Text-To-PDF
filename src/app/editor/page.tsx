@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import AdBannerPlaceholder from "@/components/layout/AdBannerPlaceholder";
 import { generatePdf } from "@/utils/generatePdf";
@@ -18,6 +18,24 @@ export default function EditorPage() {
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const titleRef = useRef<string>("");
   const editorApiRef = useRef<{ getText: () => string } | null>(null);
+
+  // Hebrew RTL & Language State
+  const [language, setLanguage] = useState<"en" | "he">("en");
+  const isRtl = language === "he";
+
+  useEffect(() => {
+    const savedLang = localStorage.getItem("app_language") as "en" | "he";
+    if (savedLang) {
+      setLanguage(savedLang);
+      document.documentElement.dir = savedLang === "he" ? "rtl" : "ltr";
+    }
+  }, []);
+
+  const handleLanguageChange = (lang: "en" | "he") => {
+    setLanguage(lang);
+    localStorage.setItem("app_language", lang);
+    document.documentElement.dir = lang === "he" ? "rtl" : "ltr";
+  };
 
   const handleExportPdf = async () => {
     if (!editorRef.current) return;
@@ -62,6 +80,26 @@ export default function EditorPage() {
           <h1 className="text-xl font-bold text-slate-800 tracking-tight hidden sm:block">Text to PDF</h1>
         </div>
         <div className="flex items-center gap-2.5">
+          {/* Language Toggle */}
+          <div className="flex items-center bg-slate-100 p-0.5 rounded-full border border-slate-200">
+            <button
+              onClick={() => handleLanguageChange("en")}
+              className={`px-3 py-1 text-xs font-semibold rounded-full transition-all cursor-pointer ${
+                language === "en" ? "bg-white text-indigo-600 shadow-sm" : "text-slate-500 hover:text-slate-800"
+              }`}
+            >
+              EN
+            </button>
+            <button
+              onClick={() => handleLanguageChange("he")}
+              className={`px-3 py-1 text-xs font-semibold rounded-full transition-all cursor-pointer ${
+                language === "he" ? "bg-white text-indigo-600 shadow-sm" : "text-slate-500 hover:text-slate-800"
+              }`}
+            >
+              עב
+            </button>
+          </div>
+
           {/* History Toggle Button */}
           <button
             onClick={() => setIsHistoryOpen(true)}
@@ -92,6 +130,7 @@ export default function EditorPage() {
           editorApiRef={editorApiRef} 
           isHistoryOpen={isHistoryOpen}
           onCloseHistory={() => setIsHistoryOpen(false)}
+          isRtl={isRtl}
         />
       </main>
 

@@ -23,6 +23,7 @@ interface TipTapEditorProps {
   editorApiRef?: React.MutableRefObject<{ getText: () => string } | null>;
   isHistoryOpen?: boolean;
   onCloseHistory?: () => void;
+  isRtl?: boolean;
 }
 
 const extensions = [
@@ -51,6 +52,7 @@ export default function TipTapEditor({
   editorApiRef,
   isHistoryOpen,
   onCloseHistory,
+  isRtl = false,
 }: TipTapEditorProps) {
   const [theme, setTheme] = useState<FontTheme>("font-sans");
   const [watermark, setWatermark] = useState("");
@@ -108,6 +110,20 @@ export default function TipTapEditor({
       }, 500);
     },
   });
+
+  // Dynamically set TipTap editor options on RTL changes
+  useEffect(() => {
+    if (editor) {
+      editor.setOptions({
+        editorProps: {
+          attributes: {
+            class: "tiptap w-full text-base sm:text-lg focus:outline-none min-h-[300px] sm:min-h-[900px] relative z-20",
+            dir: isRtl ? "rtl" : "ltr",
+          },
+        },
+      });
+    }
+  }, [editor, isRtl]);
 
   // Clean up auto-save timeout on component unmount
   useEffect(() => {
@@ -492,7 +508,7 @@ export default function TipTapEditor({
 
       {/* Slide-over History Drawer */}
       {isHistoryOpen && isHydrated && (
-        <div className="fixed inset-0 z-[100] flex justify-end">
+        <div className="fixed inset-0 z-[100] flex justify-end rtl:justify-start">
           {/* Backdrop blur with fade animation */}
           <div
             className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity animate-in fade-in duration-200"
@@ -500,7 +516,7 @@ export default function TipTapEditor({
           />
           
           {/* Slide-in panel */}
-          <div className="relative w-full max-w-md bg-white h-full shadow-2xl flex flex-col z-10 animate-in slide-in-from-right duration-200">
+          <div className="relative w-full max-w-md bg-white h-full shadow-2xl flex flex-col z-10 animate-in slide-in-from-right rtl:slide-in-from-left duration-200">
             {/* Header */}
             <div className="flex items-center justify-between border-b border-slate-100 p-6">
               <div>
@@ -555,28 +571,28 @@ export default function TipTapEditor({
                     key={doc.id}
                     onClick={() => handleLoadDocument(doc.id)}
                     className={cn(
-                      "group relative flex flex-col p-4 rounded-xl border transition-all duration-150 cursor-pointer text-left",
+                      "group relative flex flex-col p-4 rounded-xl border transition-all duration-150 cursor-pointer text-start",
                       isActive
                         ? "bg-indigo-50/40 border-indigo-200 ring-1 ring-indigo-200"
                         : "bg-white border-slate-200 hover:border-slate-350 hover:bg-slate-50/50"
                     )}
                   >
                     <div className="flex items-start justify-between gap-4">
-                      <div className="font-semibold text-slate-800 truncate pr-6 text-sm">
+                      <div className="font-semibold text-slate-800 truncate pe-6 text-sm">
                         {doc.title || "Untitled Document"}
                       </div>
                       
                       {/* Delete icon (visible on hover/focus) */}
                       <button
                         onClick={(e) => handleDeleteDocument(doc.id, e)}
-                        className="opacity-0 group-hover:opacity-100 focus:opacity-100 p-1.5 rounded text-slate-400 hover:text-red-600 hover:bg-red-50 transition-all absolute right-3 top-3 cursor-pointer"
+                        className="opacity-0 group-hover:opacity-100 focus:opacity-100 p-1.5 rounded text-slate-400 hover:text-red-600 hover:bg-red-50 transition-all absolute end-3 top-3 cursor-pointer"
                         title="Delete document"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
                     </div>
                     
-                    <p className="text-xs text-slate-500 mt-1 line-clamp-2 pr-4 min-h-[2rem]">
+                    <p className="text-xs text-slate-500 mt-1 line-clamp-2 pe-4 min-h-[2rem]">
                       {snippet || <span className="italic text-slate-400">Empty document</span>}
                     </p>
                     

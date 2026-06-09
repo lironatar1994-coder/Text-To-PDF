@@ -148,7 +148,7 @@ export function EditorToolbar({ editor, theme, setTheme, watermark, setWatermark
     <div
       className={cn(
         "absolute z-50 w-64 bg-white rounded-xl border border-slate-200 shadow-xl p-3 flex flex-col gap-3 animate-in fade-in duration-150",
-        isMobile ? "right-0 bottom-full mb-3" : "left-0 top-full mt-2"
+        isMobile ? "end-0 bottom-full mb-3" : "start-0 top-full mt-2"
       )}
       onClick={(e) => e.stopPropagation()}
     >
@@ -180,7 +180,7 @@ export function EditorToolbar({ editor, theme, setTheme, watermark, setWatermark
                   setSavedStamps(updated);
                   localStorage.setItem("pdf_app_stamps", JSON.stringify(updated));
                 }}
-                className="opacity-0 group-hover:opacity-100 hover:scale-110 p-1 bg-red-50 text-red-500 rounded border border-red-100 absolute right-1 top-1 transition-all cursor-pointer shadow-sm"
+                className="opacity-0 group-hover:opacity-100 hover:scale-110 p-1 bg-red-50 text-red-500 rounded border border-red-100 absolute end-1 top-1 transition-all cursor-pointer shadow-sm"
                 title="Delete stamp"
               >
                 <Trash2 className="w-3 h-3" />
@@ -287,7 +287,7 @@ export function EditorToolbar({ editor, theme, setTheme, watermark, setWatermark
 
         {/* Settings Floating Popover */}
         {showMobileOptions && (
-          <div className="absolute right-0 bottom-full mb-3 z-50 w-56 bg-white rounded-xl border border-slate-200 shadow-xl p-2 flex flex-col gap-1 animate-in fade-in slide-in-from-bottom-2 duration-200">
+          <div className="absolute end-0 bottom-full mb-3 z-50 w-56 bg-white rounded-xl border border-slate-200 shadow-xl p-2 flex flex-col gap-1 animate-in fade-in slide-in-from-bottom-2 duration-200">
             {/* Templates Accordion */}
             <div className="flex flex-col">
               <button
@@ -299,7 +299,7 @@ export function EditorToolbar({ editor, theme, setTheme, watermark, setWatermark
               </button>
               
               {expandedSection === "templates" && (
-                <div className="flex flex-col pl-3 pr-2 py-1 gap-0.5 border-l-2 border-slate-100 ml-3 mt-0.5 animate-in fade-in slide-in-from-top-1 duration-150">
+                <div className="flex flex-col ps-3 pe-2 py-1 gap-0.5 border-s-2 border-slate-100 ms-3 mt-0.5 animate-in fade-in slide-in-from-top-1 duration-150">
                   <button
                     onClick={() => {
                       onSelectTemplate("blank");
@@ -342,14 +342,14 @@ export function EditorToolbar({ editor, theme, setTheme, watermark, setWatermark
               </button>
               
               {expandedSection === "fonts" && (
-                <div className="flex flex-col pl-3 pr-2 py-1 gap-0.5 border-l-2 border-slate-100 ml-3 mt-0.5 animate-in fade-in slide-in-from-top-1 duration-150">
+                <div className="flex flex-col ps-3 pe-2 py-1 gap-0.5 border-s-2 border-slate-100 ms-3 mt-0.5 animate-in fade-in slide-in-from-top-1 duration-150">
                   <button
                     onClick={() => {
                       setTheme("font-sans");
                       setShowMobileOptions(false);
                     }}
                     className={cn(
-                      "w-full flex items-center justify-between px-2.5 py-1.5 text-xs font-medium rounded-md transition-colors text-left",
+                      "w-full flex items-center justify-between px-2.5 py-1.5 text-xs font-medium rounded-md transition-colors text-start",
                       theme === "font-sans" ? "bg-indigo-50 text-indigo-600 font-semibold" : "text-slate-600 hover:bg-slate-50"
                     )}
                   >
@@ -362,7 +362,7 @@ export function EditorToolbar({ editor, theme, setTheme, watermark, setWatermark
                       setShowMobileOptions(false);
                     }}
                     className={cn(
-                      "w-full flex items-center justify-between px-2.5 py-1.5 text-xs font-medium rounded-md transition-colors text-left",
+                      "w-full flex items-center justify-between px-2.5 py-1.5 text-xs font-medium rounded-md transition-colors text-start",
                       theme === "font-serif" ? "bg-indigo-50 text-indigo-600 font-semibold" : "text-slate-600 hover:bg-slate-50"
                     )}
                   >
@@ -375,7 +375,7 @@ export function EditorToolbar({ editor, theme, setTheme, watermark, setWatermark
                       setShowMobileOptions(false);
                     }}
                     className={cn(
-                      "w-full flex items-center justify-between px-2.5 py-1.5 text-xs font-medium rounded-md transition-colors text-left",
+                      "w-full flex items-center justify-between px-2.5 py-1.5 text-xs font-medium rounded-md transition-colors text-start",
                       theme === "font-mono" ? "bg-indigo-50 text-indigo-600 font-semibold" : "text-slate-600 hover:bg-slate-50"
                     )}
                   >
@@ -397,7 +397,7 @@ export function EditorToolbar({ editor, theme, setTheme, watermark, setWatermark
               </button>
               
               {expandedSection === "watermark" && (
-                <div className="px-3 py-1.5 ml-3 mt-1 border-l-2 border-slate-100 pl-3 animate-in fade-in slide-in-from-top-1 duration-150">
+                <div className="px-3 py-1.5 ms-3 mt-1 border-s-2 border-slate-100 ps-3 animate-in fade-in slide-in-from-top-1 duration-150">
                   <input
                     type="text"
                     placeholder="Type watermark..."
