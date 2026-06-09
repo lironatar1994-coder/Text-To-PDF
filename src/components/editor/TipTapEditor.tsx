@@ -24,6 +24,8 @@ interface TipTapEditorProps {
   isHistoryOpen?: boolean;
   onCloseHistory?: () => void;
   isRtl?: boolean;
+  language?: "en" | "he";
+  onLanguageChange?: (lang: "en" | "he") => void;
 }
 
 const extensions = [
@@ -53,6 +55,8 @@ export default function TipTapEditor({
   isHistoryOpen,
   onCloseHistory,
   isRtl = false,
+  language = "en",
+  onLanguageChange,
 }: TipTapEditorProps) {
   const [theme, setTheme] = useState<FontTheme>("font-sans");
   const [watermark, setWatermark] = useState("");
@@ -236,6 +240,34 @@ export default function TipTapEditor({
       localStorage.setItem("pdf_app_history", JSON.stringify(updated));
       return updated;
     });
+  };
+
+  const handleClearDocument = () => {
+    if (!editor) return;
+    if (confirm("Are you sure you want to clear the entire document? This cannot be undone.")) {
+      editor.commands.setContent("");
+      setTitle("Untitled Document");
+      titleRef.current = "Untitled Document";
+
+      const activeId = currentDocIdRef.current;
+      if (activeId) {
+        setHistoryList((prev) => {
+          const updated = prev.map((doc) => {
+            if (doc.id === activeId) {
+              return {
+                ...doc,
+                content: "",
+                title: "Untitled Document",
+                updatedAt: new Date().toISOString(),
+              };
+            }
+            return doc;
+          });
+          localStorage.setItem("pdf_app_history", JSON.stringify(updated));
+          return updated;
+        });
+      }
+    }
   };
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -439,6 +471,9 @@ export default function TipTapEditor({
           watermark={watermark}
           setWatermark={setWatermark}
           onSelectTemplate={handleTemplateSelect}
+          language={language}
+          onLanguageChange={onLanguageChange}
+          onClearDocument={handleClearDocument}
         />
       </div>
 

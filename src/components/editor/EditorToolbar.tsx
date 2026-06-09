@@ -12,6 +12,9 @@ interface EditorToolbarProps {
   watermark: string;
   setWatermark: (watermark: string) => void;
   onSelectTemplate: (template: string) => void;
+  language: "en" | "he";
+  onLanguageChange?: (lang: "en" | "he") => void;
+  onClearDocument: () => void;
 }
 
 const ToolbarButton = ({
@@ -37,12 +40,23 @@ const ToolbarButton = ({
   </button>
 );
 
-export function EditorToolbar({ editor, theme, setTheme, watermark, setWatermark, onSelectTemplate }: EditorToolbarProps) {
+export function EditorToolbar({
+  editor,
+  theme,
+  setTheme,
+  watermark,
+  setWatermark,
+  onSelectTemplate,
+  language,
+  onLanguageChange,
+  onClearDocument,
+}: EditorToolbarProps) {
   const [showMobileOptions, setShowMobileOptions] = useState(false);
   const [expandedSection, setExpandedSection] = useState<"templates" | "fonts" | "watermark" | null>(null);
 
-  // Stamp library states
+  // Stamp library & Settings states
   const [showStampsPopover, setShowStampsPopover] = useState(false);
+  const [showSettingsPopover, setShowSettingsPopover] = useState(false);
   const [savedStamps, setSavedStamps] = useState<{ id: string; src: string }[]>([]);
   
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -206,13 +220,76 @@ export function EditorToolbar({ editor, theme, setTheme, watermark, setWatermark
     </div>
   );
 
+  const SettingsPopoverContent = () => (
+    <div
+      className="absolute z-50 w-56 bg-white rounded-xl border border-slate-200 shadow-xl p-3.5 flex flex-col gap-3.5 animate-in fade-in duration-150 end-0 top-full mt-2"
+      onClick={(e) => e.stopPropagation()}
+    >
+      {/* Language Section */}
+      <div className="flex flex-col gap-1.5">
+        <span className="text-xs font-bold text-slate-700">Language / שפה</span>
+        <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200/60">
+          <button
+            onClick={() => {
+              onLanguageChange?.("en");
+              setShowSettingsPopover(false);
+            }}
+            className={cn(
+              "flex-1 text-center py-1 text-xs font-semibold rounded-md transition-all cursor-pointer",
+              language === "en"
+                ? "bg-white text-indigo-600 shadow-sm"
+                : "text-slate-500 hover:text-slate-800"
+            )}
+          >
+            English
+          </button>
+          <button
+            onClick={() => {
+              onLanguageChange?.("he");
+              setShowSettingsPopover(false);
+            }}
+            className={cn(
+              "flex-1 text-center py-1 text-xs font-semibold rounded-md transition-all cursor-pointer",
+              language === "he"
+                ? "bg-white text-indigo-600 shadow-sm"
+                : "text-slate-500 hover:text-slate-800"
+            )}
+          >
+            עברית
+          </button>
+        </div>
+      </div>
+
+      <div className="h-[1px] bg-slate-100" />
+
+      {/* Action Section */}
+      <div className="flex flex-col gap-1.5">
+        <span className="text-xs font-bold text-slate-700">Actions</span>
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            onClearDocument();
+            setShowSettingsPopover(false);
+          }}
+          className="w-full bg-red-50 hover:bg-red-100 text-red-600 border border-red-200/40 font-semibold py-2 text-xs rounded-lg transition-all flex items-center justify-center gap-1.5 shadow-sm active:scale-95 duration-100 cursor-pointer"
+        >
+          <Trash2 className="w-3.5 h-3.5" />
+          <span>Clear Canvas</span>
+        </button>
+      </div>
+    </div>
+  );
+
   return (
     <div className="flex flex-col w-full bg-transparent sm:bg-transparent z-30 relative">
       {/* Click-away backdrop for popovers */}
-      {showStampsPopover && (
+      {(showStampsPopover || showSettingsPopover) && (
         <div
           className="fixed inset-0 z-40 bg-transparent"
-          onClick={() => setShowStampsPopover(false)}
+          onClick={() => {
+            setShowStampsPopover(false);
+            setShowSettingsPopover(false);
+          }}
         />
       )}
 
@@ -287,7 +364,44 @@ export function EditorToolbar({ editor, theme, setTheme, watermark, setWatermark
 
         {/* Settings Floating Popover */}
         {showMobileOptions && (
-          <div className="absolute end-0 bottom-full mb-3 z-50 w-56 bg-white rounded-xl border border-slate-200 shadow-xl p-2 flex flex-col gap-1 animate-in fade-in slide-in-from-bottom-2 duration-200">
+          <div className="absolute end-0 bottom-full mb-3 z-50 w-56 bg-white rounded-xl border border-slate-200 shadow-xl p-2 flex flex-col gap-1.5 animate-in fade-in slide-in-from-bottom-2 duration-200">
+            {/* Mobile Language Row */}
+            <div className="px-3 py-1 flex flex-col gap-1.5">
+              <span className="text-[11px] font-bold text-slate-600">Language / שפה</span>
+              <div className="flex items-center bg-slate-55 p-0.5 rounded-lg border border-slate-100">
+                <button
+                  onClick={() => {
+                    onLanguageChange?.("en");
+                    setShowMobileOptions(false);
+                  }}
+                  className={cn(
+                    "flex-1 text-center py-1 text-[11px] font-semibold rounded-md transition-all cursor-pointer",
+                    language === "en"
+                      ? "bg-white text-indigo-600 shadow-sm"
+                      : "text-slate-500 hover:text-slate-800"
+                  )}
+                >
+                  English
+                </button>
+                <button
+                  onClick={() => {
+                    onLanguageChange?.("he");
+                    setShowMobileOptions(false);
+                  }}
+                  className={cn(
+                    "flex-1 text-center py-1 text-[11px] font-semibold rounded-md transition-all cursor-pointer",
+                    language === "he"
+                      ? "bg-white text-indigo-600 shadow-sm"
+                      : "text-slate-500 hover:text-slate-800"
+                  )}
+                >
+                  עברית
+                </button>
+              </div>
+            </div>
+
+            <div className="h-[1px] bg-slate-100 mx-2" />
+
             {/* Templates Accordion */}
             <div className="flex flex-col">
               <button
@@ -408,6 +522,22 @@ export function EditorToolbar({ editor, theme, setTheme, watermark, setWatermark
                 </div>
               )}
             </div>
+
+            {/* Clear Document Row */}
+            <div className="border-t border-slate-100 mt-1 pt-1.5">
+              <button
+                onClick={() => {
+                  onClearDocument();
+                  setShowMobileOptions(false);
+                }}
+                className="w-full flex items-center justify-between px-3 py-2 text-sm font-semibold text-red-600 hover:bg-red-50 rounded-lg transition-colors text-start cursor-pointer"
+              >
+                <span className="flex items-center gap-2">
+                  <Trash2 className="w-4 h-4" />
+                  <span>Clear Document</span>
+                </span>
+              </button>
+            </div>
           </div>
         )}
       </div>
@@ -446,7 +576,7 @@ export function EditorToolbar({ editor, theme, setTheme, watermark, setWatermark
                   setShowStampsPopover(!showStampsPopover);
                 }}
                 className={cn(
-                  "p-2 rounded-md hover:bg-indigo-50 transition-colors text-slate-600 hover:text-indigo-600 focus:outline-none",
+                  "p-2 rounded-md hover:bg-indigo-50 transition-colors text-slate-600 hover:text-indigo-600 focus:outline-none cursor-pointer",
                   showStampsPopover && "bg-indigo-100 text-indigo-700 shadow-inner"
                 )}
                 title="Stamps / Signatures"
@@ -459,6 +589,24 @@ export function EditorToolbar({ editor, theme, setTheme, watermark, setWatermark
 
           <div className="flex items-center gap-2">
             <AdvancedOptions />
+
+            {/* Desktop Settings button */}
+            <div className="relative">
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  setShowSettingsPopover(!showSettingsPopover);
+                }}
+                className={cn(
+                  "p-2 rounded-md hover:bg-indigo-50 transition-all text-slate-600 hover:text-indigo-600 focus:outline-none cursor-pointer",
+                  showSettingsPopover && "bg-indigo-100 text-indigo-700 shadow-inner"
+                )}
+                title="Settings"
+              >
+                <Settings2 className="w-5 h-5" />
+              </button>
+              {showSettingsPopover && <SettingsPopoverContent />}
+            </div>
           </div>
         </div>
       </div>

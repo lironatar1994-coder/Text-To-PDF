@@ -80,26 +80,6 @@ export default function EditorPage() {
           <h1 className="text-xl font-bold text-slate-800 tracking-tight hidden sm:block">Text to PDF</h1>
         </div>
         <div className="flex items-center gap-2.5">
-          {/* Language Toggle */}
-          <div className="flex items-center bg-slate-100 p-0.5 rounded-full border border-slate-200">
-            <button
-              onClick={() => handleLanguageChange("en")}
-              className={`px-3 py-1 text-xs font-semibold rounded-full transition-all cursor-pointer ${
-                language === "en" ? "bg-white text-indigo-600 shadow-sm" : "text-slate-500 hover:text-slate-800"
-              }`}
-            >
-              EN
-            </button>
-            <button
-              onClick={() => handleLanguageChange("he")}
-              className={`px-3 py-1 text-xs font-semibold rounded-full transition-all cursor-pointer ${
-                language === "he" ? "bg-white text-indigo-600 shadow-sm" : "text-slate-500 hover:text-slate-800"
-              }`}
-            >
-              עב
-            </button>
-          </div>
-
           {/* History Toggle Button */}
           <button
             onClick={() => setIsHistoryOpen(true)}
@@ -131,6 +111,8 @@ export default function EditorPage() {
           isHistoryOpen={isHistoryOpen}
           onCloseHistory={() => setIsHistoryOpen(false)}
           isRtl={isRtl}
+          language={language}
+          onLanguageChange={handleLanguageChange}
         />
       </main>
 
