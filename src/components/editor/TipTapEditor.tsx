@@ -505,6 +505,11 @@ export default function TipTapEditor({
             type="text"
             value={title}
             onChange={handleTitleChange}
+            onFocus={(e) => {
+              if (e.target.value === "Untitled Document") {
+                e.target.select();
+              }
+            }}
             placeholder="Untitled Document"
             className="w-full text-4xl font-extrabold text-slate-900 bg-transparent border-none outline-none focus:ring-0 placeholder-slate-300 mb-4"
           />
