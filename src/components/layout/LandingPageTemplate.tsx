@@ -1,6 +1,8 @@
 import React from "react";
 import Link from "next/link";
-import { Feather, Zap, Type, Lock, ArrowRight } from "lucide-react";
+import { Zap, Type, Lock, Feather, ArrowRight } from "lucide-react";
+import Image from "next/image";
+import logoImg from "../../../public/logo.png";
 
 interface LandingPageTemplateProps {
   h1: React.ReactNode;
@@ -22,8 +24,14 @@ export default function LandingPageTemplate({
       {/* Navbar header */}
       <header className="w-full h-16 bg-white/70 backdrop-blur-md border-b border-slate-200/50 sticky top-0 z-40 flex items-center justify-between px-6 sm:px-12">
         <div className="flex items-center gap-2">
-          <div className="bg-indigo-100 p-1.5 rounded-lg text-indigo-600">
-            <Feather className="h-5 w-5" />
+          <div className="overflow-hidden rounded-lg border border-slate-200">
+            <Image 
+              src={logoImg} 
+              alt="Text to PDF logo" 
+              width={28} 
+              height={28} 
+              className="h-7 w-7 object-cover"
+            />
           </div>
           <span className="text-xl font-bold tracking-tight text-slate-900">Text to PDF</span>
         </div>

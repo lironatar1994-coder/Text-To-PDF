@@ -4,8 +4,10 @@ import { useRef, useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import AdBannerPlaceholder from "@/components/layout/AdBannerPlaceholder";
 import { generatePdf } from "@/utils/generatePdf";
-import { FileDown, Feather, FolderOpen } from "lucide-react";
+import { FileDown, FolderOpen } from "lucide-react";
 import ExportModal from "@/components/editor/ExportModal";
+import Image from "next/image";
+import logoImg from "../../../public/logo.png";
 
 const TipTapEditor = dynamic(() => import("@/components/editor/TipTapEditor"), {
   ssr: false,
@@ -74,8 +76,14 @@ export default function EditorPage() {
       {/* Header */}
       <header className="shrink-0 flex h-16 items-center justify-between border-b border-slate-200 bg-white px-4 sm:px-6 z-10 shadow-sm">
         <div className="flex items-center gap-2">
-          <div className="bg-indigo-100 p-1.5 rounded-lg text-indigo-600">
-            <Feather className="h-5 w-5" />
+          <div className="overflow-hidden rounded-lg border border-slate-200">
+            <Image 
+              src={logoImg} 
+              alt="Text to PDF logo" 
+              width={28} 
+              height={28} 
+              className="h-7 w-7 object-cover"
+            />
           </div>
           <h1 className="text-xl font-bold text-slate-800 tracking-tight hidden sm:block">Text to PDF</h1>
         </div>
