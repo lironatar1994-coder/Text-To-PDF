@@ -1,3 +1,8 @@
+param(
+    [Parameter(Position=0, Mandatory=$false)]
+    [string]$CommitMessage
+)
+
 # ==============================================================================
 # Text to PDF Deployment Script (Local PC)
 # ==============================================================================
@@ -17,6 +22,15 @@ Write-Host "=============================================" -ForegroundColor Cyan
 Start-Transcript -Path $LogPath -Append -Force
 
 try {
+    if ($CommitMessage) {
+        Write-Host "[0/4] Staging, committing, and pushing changes to GitHub..." -ForegroundColor Blue
+        git add .
+        git commit -m $CommitMessage
+        git push origin main
+    } else {
+        Write-Host "[0/4] No commit message provided. Skipping GitHub push." -ForegroundColor Yellow
+    }
+
     Write-Host "[1/4] Connecting to server and pulling latest git commit..." -ForegroundColor Blue
     $GitPullCmd = "cd $RemotePath && git pull origin main"
     ssh -o StrictHostKeyChecking=no -i $KeyPath "$ServerUser@$ServerIP" $GitPullCmd

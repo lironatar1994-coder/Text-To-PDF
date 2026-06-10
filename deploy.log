@@ -1,0 +1,128 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20260610121013
+Username: LIROM\liron
+RunAs User: LIROM\liron
+Configuration Name: 
+Machine: LIROM (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -file  C:\Users\liron\Text-To-PDF\deploy.ps1 
+Process ID: 11708
+PSVersion: 5.1.26100.8457
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.8457
+BuildVersion: 10.0.26100.8457
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcript started, output file is C:\Users\liron\Text-To-PDF\deploy.log
+[1/4] Connecting to server and pulling latest git commit...
+Warning: Identity file C:\Users\User\.ssh\id_rsa not accessible: No such file or directory.
+From https://github.com/lironatar1994-coder/Text-To-PDF
+ * branch            main       -> FETCH_HEAD
+   ba1dd8c..6d84f64  main       -> origin/main
+Updating ba1dd8c..6d84f64
+Fast-forward
+ public/this_is_a_web_i_created_named.mp4      | Bin 0 -> 2737017 bytes
+ src/components/layout/LandingPageTemplate.tsx |  42 +++++++-------------------
+ 2 files changed, 11 insertions(+), 31 deletions(-)
+ create mode 100644 public/this_is_a_web_i_created_named.mp4
+[2/4] Installing dependencies...
+
+up to date, audited 423 packages in 3s
+
+178 packages are looking for funding
+  run `npm fund` for details
+
+2 moderate severity vulnerabilities
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+[3/4] Rebuilding Next.js application...
+
+[4/4] Restarting PM2 process...
+
+=============================================
+Deployment Completed Successfully!
+Log saved to: C:\Users\liron\Text-To-PDF\deploy.log
+=============================================
+**********************
+Windows PowerShell transcript end
+End time: 20260610121046
+**********************
+**********************
+Windows PowerShell transcript start
+Start time: 20260610123819
+Username: LIROM\liron
+RunAs User: LIROM\liron
+Configuration Name: 
+Machine: LIROM (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -noexit -command try { . "c:\Users\liron\AppData\Local\Programs\Antigravity IDE\resources\app\out\vs\workbench\contrib\terminal\common\scripts\shellIntegration.ps1" } catch {}
+Process ID: 31632
+PSVersion: 5.1.26100.8457
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.8457
+BuildVersion: 10.0.26100.8457
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcript started, output file is C:\Users\liron\Text-To-PDF\deploy.log
+[1/4] Connecting to server and pulling latest git commit...
+uch file or directory.
+From https://github.com/lironatar1994-coder/Text-To-PDF
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+[2/4] Installing dependencies...
+
+[3/4] Rebuilding Next.js application...
+
+[4/4] Restarting PM2 process...
+
+=============================================
+Deployment Completed Successfully!
+Log saved to: C:\Users\liron\Text-To-PDF\deploy.log
+=============================================
+**********************
+Windows PowerShell transcript end
+End time: 20260610123854
+**********************
+**********************
+Windows PowerShell transcript start
+Start time: 20260610124000
+Username: LIROM\liron
+RunAs User: LIROM\liron
+Configuration Name: 
+Machine: LIROM (Microsoft Windows NT 10.0.26200.0)
+Host Application: powershell -Command .\deploy.ps1
+Process ID: 30868
+PSVersion: 5.1.26100.8457
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.8457
+BuildVersion: 10.0.26100.8457
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcript started, output file is C:\Users\liron\Text-To-PDF\deploy.log
+[1/4] Connecting to server and pulling latest git commit...
+
+[2/4] Installing dependencies...
+
+[3/4] Rebuilding Next.js application...
+
+[4/4] Restarting PM2 process...
+
+=============================================
+Deployment Completed Successfully!
+Log saved to: C:\Users\liron\Text-To-PDF\deploy.log
+=============================================
+**********************
+Windows PowerShell transcript end
+End time: 20260610124037
+**********************
