@@ -114,11 +114,7 @@ export default function LandingPageTemplate({
             className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-bold px-8 py-4 text-base shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/35 transition-all hover:scale-[1.03] active:scale-95 duration-150 group cursor-pointer"
           >
             <span>{activeCtaText}</span>
-            {isRtl ? (
-              <ArrowLeft className="w-5 h-5 transition-transform group-hover:-translate-x-1 duration-150" />
-            ) : (
-              <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1 duration-150" />
-            )}
+            <ArrowRight className="w-5 h-5 transition-transform duration-150 rtl:rotate-180 group-hover:translate-x-1 rtl:group-hover:-translate-x-1" />
           </Link>
         </div>
 

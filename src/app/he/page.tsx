@@ -10,14 +10,9 @@ export const metadata: Metadata = {
 export default function HebrewLandingPage() {
   return (
     <LandingPageTemplate
-      h1={
-        <>
-          <span dir="ltr" className="inline-block">Text to PDF.</span> <br className="hidden sm:inline" />
-          מסמכים יפהפיים, ברגע.
-        </>
-      }
-      subtitle="עורך טקסט פרמיום הפועל באופן חלק ישירות בדפדפן. כתוב, עצב וייצא קובצי A4 PDF מושלמים בפרטיות מוחלטת."
-      ctaText="פתח את העורך החינמי"
+      h1="מסמכי PDF יפהפיים, ברגע."
+      subtitle="העורך הפרטי שלך, ישירות בדפדפן, ליצירת מסמכי A4 מושלמים."
+      ctaText="התחל לכתוב"
       language="he"
     />
   );

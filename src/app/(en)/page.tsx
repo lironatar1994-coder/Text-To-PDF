@@ -10,13 +10,9 @@ export const metadata: Metadata = {
 export default function LandingPage() {
   return (
     <LandingPageTemplate
-      h1={
-        <>
-          Text to PDF. <br className="hidden sm:inline" />
-          Beautiful documents, instantly.
-        </>
-      }
-      subtitle="A premium markdown editor that runs seamlessly in your browser. Draft, format, and export perfect A4 PDFs with absolute privacy."
+      h1="Beautiful PDFs, instantly."
+      subtitle="The private, browser-based text editor for perfect A4 documents."
+      ctaText="Start Writing"
       language="en"
     />
   );
