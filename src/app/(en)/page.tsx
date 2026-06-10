@@ -3,8 +3,8 @@ import type { Metadata } from "next";
 import LandingPageTemplate from "@/components/layout/LandingPageTemplate";
 
 export const metadata: Metadata = {
-  title: "Text to PDF | Minimal A4 Document Editor",
-  description: "A clean, offline-first editor to format text and generate A4 PDF documents directly in your browser. Fully private with no server uploads.",
+  title: "Text to PDF | Beautifully Simple Document Creation",
+  description: "Craft and export flawless A4 PDFs directly in your browser. A premium, offline-first markdown editor designed for speed and absolute privacy.",
 };
 
 export default function LandingPage() {
@@ -12,11 +12,11 @@ export default function LandingPage() {
     <LandingPageTemplate
       h1={
         <>
-          Write text. <br className="hidden sm:inline" />
-          Export beautiful PDFs.
+          Text to PDF. <br className="hidden sm:inline" />
+          Beautiful documents, instantly.
         </>
       }
-      subtitle="A minimal, offline-first document editor that runs entirely in your browser. No accounts, no uploads, 100% private."
+      subtitle="A premium markdown editor that runs seamlessly in your browser. Draft, format, and export perfect A4 PDFs with absolute privacy."
       language="en"
     />
   );
