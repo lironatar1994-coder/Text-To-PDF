@@ -44,7 +44,7 @@ export default function EditorPage() {
     
     setIsExporting(true);
     try {
-      const filename = `${titleRef.current.trim() || "Title here"}.pdf`;
+      const filename = `${titleRef.current.trim() || (language === "he" ? "כותרת כאן" : "Title here")}.pdf`;
       await generatePdf(editorRef.current, filename);
       setIsModalOpen(false); // Close modal on successful download
     } catch (error) {
@@ -137,6 +137,7 @@ export default function EditorPage() {
         onShare={handleShareWhatsApp}
         isExporting={isExporting}
         documentTitle={titleRef.current}
+        language={language}
       />
     </div>
   );

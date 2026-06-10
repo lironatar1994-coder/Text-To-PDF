@@ -10,6 +10,7 @@ interface ExportModalProps {
   onShare: () => void;
   isExporting: boolean;
   documentTitle: string;
+  language?: "en" | "he";
 }
 
 export default function ExportModal({
@@ -19,6 +20,7 @@ export default function ExportModal({
   onShare,
   isExporting,
   documentTitle,
+  language = "en",
 }: ExportModalProps) {
   if (!isOpen) return null;
 
@@ -28,7 +30,7 @@ export default function ExportModal({
     }
   };
 
-  const finalTitle = documentTitle.trim() || "Title here";
+  const finalTitle = documentTitle.trim() || (language === "he" ? "כותרת כאן" : "Title here");
 
   return (
     <div

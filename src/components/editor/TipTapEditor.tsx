@@ -31,7 +31,10 @@ interface TipTapEditorProps {
 const extensions = [
   StarterKit,
   Placeholder.configure({
-    placeholder: 'Start typing your document here...',
+    placeholder: ({ node }) => {
+      const isRtl = typeof document !== 'undefined' && document.documentElement.dir === 'rtl';
+      return isRtl ? 'התחל להקליד את המסמך שלך כאן...' : 'Start typing your document here...';
+    },
     emptyEditorClass: 'is-editor-empty',
     emptyNodeClass: 'is-editor-empty',
   }),
@@ -98,7 +101,7 @@ export default function TipTapEditor({
           const updated = prev.map((doc) => {
             if (doc.id === activeId) {
               const currentTitle = titleRef.current;
-              const titleToSave = currentTitle.trim() === "" ? "Title here" : currentTitle;
+              const titleToSave = currentTitle;
               
               return {
                 ...doc,
@@ -179,7 +182,7 @@ export default function TipTapEditor({
       const newId = typeof crypto.randomUUID === "function" ? crypto.randomUUID() : Date.now().toString();
       parsedHistory = [{
         id: newId,
-        title: "Title here",
+        title: "",
         content: "",
         updatedAt: new Date().toISOString(),
       }];
@@ -224,7 +227,7 @@ export default function TipTapEditor({
     const html = editor.getHTML();
     const activeId = currentDocIdRef.current;
     const currentTitle = titleRef.current;
-    const titleToSave = currentTitle.trim() === "" ? "Title here" : currentTitle;
+    const titleToSave = currentTitle;
 
     setHistoryList((prev) => {
       const updated = prev.map((doc) => {
@@ -247,8 +250,8 @@ export default function TipTapEditor({
     if (!editor) return;
     if (confirm("Are you sure you want to clear the entire document? This cannot be undone.")) {
       editor.commands.setContent("");
-      setTitle("Title here");
-      titleRef.current = "Title here";
+      setTitle("");
+      titleRef.current = "";
 
       const activeId = currentDocIdRef.current;
       if (activeId) {
@@ -258,7 +261,7 @@ export default function TipTapEditor({
               return {
                 ...doc,
                 content: "",
-                title: "Title here",
+                title: "",
                 updatedAt: new Date().toISOString(),
               };
             }
@@ -279,8 +282,7 @@ export default function TipTapEditor({
     const activeId = currentDocIdRef.current;
     if (!activeId) return;
 
-    // Strict fallback: use 'Title here' if trimmed is empty
-    const titleToSave = val.trim() === "" ? "Title here" : val;
+    const titleToSave = val;
 
     setHistoryList((prev) => {
       const updated = prev.map((doc) => {
@@ -378,7 +380,7 @@ export default function TipTapEditor({
         const newId = typeof crypto.randomUUID === "function" ? crypto.randomUUID() : Date.now().toString();
         const freshDoc: SavedDocument = {
           id: newId,
-          title: "Title here",
+          title: "",
           content: "",
           updatedAt: new Date().toISOString(),
         };
@@ -400,11 +402,11 @@ export default function TipTapEditor({
   const handleTemplateSelect = (template: string) => {
     if (!editor) return;
 
-    let newTitle = "Title here";
+    let newTitle = "";
     let newContent = "";
 
     if (template === "blank") {
-      newTitle = "Title here";
+      newTitle = "";
       newContent = "";
     } else if (template === "letter") {
       newTitle = "Formal Letter";
@@ -512,11 +514,11 @@ export default function TipTapEditor({
             value={title}
             onChange={handleTitleChange}
             onFocus={(e) => {
-              if (e.target.value === "Title here") {
+              if (e.target.value === "Title here" || e.target.value === "כותרת כאן") {
                 e.target.select();
               }
             }}
-            placeholder="Title here"
+            placeholder={language === "he" ? "כותרת כאן" : "Title here"}
             className="w-full text-4xl font-extrabold text-slate-900 bg-transparent border-none outline-none focus:ring-0 placeholder-slate-300 mb-4"
           />
           <div className="w-full h-[1px] bg-slate-100 mb-6 shrink-0 relative z-20" />
@@ -625,7 +627,7 @@ export default function TipTapEditor({
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div className="font-semibold text-slate-800 truncate pe-6 text-sm">
-                        {doc.title || "Title here"}
+                        {doc.title || (language === "he" ? "כותרת כאן" : "Title here")}
                       </div>
                       
                       {/* Delete icon (visible on hover/focus) */}
