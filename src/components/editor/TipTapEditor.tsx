@@ -31,8 +31,9 @@ interface TipTapEditorProps {
 const extensions = [
   StarterKit,
   Placeholder.configure({
-    placeholder: "your text here...",
-    emptyEditorClass: "is-editor-empty",
+    placeholder: 'Start typing your document here...',
+    emptyEditorClass: 'is-editor-empty',
+    emptyNodeClass: 'is-editor-empty',
   }),
   Image.configure({
     HTMLAttributes: {
@@ -301,9 +302,11 @@ export default function TipTapEditor({
     saveActiveDocumentImmediately();
 
     const newId = typeof crypto.randomUUID === "function" ? crypto.randomUUID() : Date.now().toString();
+    
+    // Explicitly create a clean document object
     const newDoc: SavedDocument = {
       id: newId,
-      title: "Title here",
+      title: "",
       content: "",
       updatedAt: new Date().toISOString(),
     };
@@ -316,10 +319,13 @@ export default function TipTapEditor({
     setCurrentDocId(newId);
     localStorage.setItem("current_doc_id", newId);
 
-    // Load into UI
-    setTitle(newDoc.title);
-    titleRef.current = newDoc.title;
-    editor?.commands.setContent(newDoc.content);
+    // Reset UI states explicitly to empty
+    setTitle("");
+    titleRef.current = "";
+    
+    if (editor) {
+      editor.commands.setContent("");
+    }
 
     if (onCloseHistory) {
       onCloseHistory();
