@@ -31,7 +31,7 @@ interface TipTapEditorProps {
 const extensions = [
   StarterKit,
   Placeholder.configure({
-    placeholder: "Start typing here...",
+    placeholder: "your text here...",
     emptyEditorClass: "is-editor-empty",
   }),
   Image.configure({
@@ -97,7 +97,7 @@ export default function TipTapEditor({
           const updated = prev.map((doc) => {
             if (doc.id === activeId) {
               const currentTitle = titleRef.current;
-              const titleToSave = currentTitle.trim() === "" ? "Untitled Document" : currentTitle;
+              const titleToSave = currentTitle.trim() === "" ? "Title here" : currentTitle;
               
               return {
                 ...doc,
@@ -178,7 +178,7 @@ export default function TipTapEditor({
       const newId = typeof crypto.randomUUID === "function" ? crypto.randomUUID() : Date.now().toString();
       parsedHistory = [{
         id: newId,
-        title: "Untitled Document",
+        title: "Title here",
         content: "",
         updatedAt: new Date().toISOString(),
       }];
@@ -223,7 +223,7 @@ export default function TipTapEditor({
     const html = editor.getHTML();
     const activeId = currentDocIdRef.current;
     const currentTitle = titleRef.current;
-    const titleToSave = currentTitle.trim() === "" ? "Untitled Document" : currentTitle;
+    const titleToSave = currentTitle.trim() === "" ? "Title here" : currentTitle;
 
     setHistoryList((prev) => {
       const updated = prev.map((doc) => {
@@ -246,8 +246,8 @@ export default function TipTapEditor({
     if (!editor) return;
     if (confirm("Are you sure you want to clear the entire document? This cannot be undone.")) {
       editor.commands.setContent("");
-      setTitle("Untitled Document");
-      titleRef.current = "Untitled Document";
+      setTitle("Title here");
+      titleRef.current = "Title here";
 
       const activeId = currentDocIdRef.current;
       if (activeId) {
@@ -257,7 +257,7 @@ export default function TipTapEditor({
               return {
                 ...doc,
                 content: "",
-                title: "Untitled Document",
+                title: "Title here",
                 updatedAt: new Date().toISOString(),
               };
             }
@@ -278,8 +278,8 @@ export default function TipTapEditor({
     const activeId = currentDocIdRef.current;
     if (!activeId) return;
 
-    // Strict fallback: use 'Untitled Document' if trimmed is empty
-    const titleToSave = val.trim() === "" ? "Untitled Document" : val;
+    // Strict fallback: use 'Title here' if trimmed is empty
+    const titleToSave = val.trim() === "" ? "Title here" : val;
 
     setHistoryList((prev) => {
       const updated = prev.map((doc) => {
@@ -303,7 +303,7 @@ export default function TipTapEditor({
     const newId = typeof crypto.randomUUID === "function" ? crypto.randomUUID() : Date.now().toString();
     const newDoc: SavedDocument = {
       id: newId,
-      title: "Untitled Document",
+      title: "Title here",
       content: "",
       updatedAt: new Date().toISOString(),
     };
@@ -372,7 +372,7 @@ export default function TipTapEditor({
         const newId = typeof crypto.randomUUID === "function" ? crypto.randomUUID() : Date.now().toString();
         const freshDoc: SavedDocument = {
           id: newId,
-          title: "Untitled Document",
+          title: "Title here",
           content: "",
           updatedAt: new Date().toISOString(),
         };
@@ -394,11 +394,11 @@ export default function TipTapEditor({
   const handleTemplateSelect = (template: string) => {
     if (!editor) return;
 
-    let newTitle = "Untitled Document";
+    let newTitle = "Title here";
     let newContent = "";
 
     if (template === "blank") {
-      newTitle = "Untitled Document";
+      newTitle = "Title here";
       newContent = "";
     } else if (template === "letter") {
       newTitle = "Formal Letter";
@@ -506,11 +506,11 @@ export default function TipTapEditor({
             value={title}
             onChange={handleTitleChange}
             onFocus={(e) => {
-              if (e.target.value === "Untitled Document") {
+              if (e.target.value === "Title here") {
                 e.target.select();
               }
             }}
-            placeholder="Untitled Document"
+            placeholder="Title here"
             className="w-full text-4xl font-extrabold text-slate-900 bg-transparent border-none outline-none focus:ring-0 placeholder-slate-300 mb-4"
           />
           <div className="w-full h-[1px] bg-slate-100 mb-6 shrink-0 relative z-20" />
@@ -619,7 +619,7 @@ export default function TipTapEditor({
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div className="font-semibold text-slate-800 truncate pe-6 text-sm">
-                        {doc.title || "Untitled Document"}
+                        {doc.title || "Title here"}
                       </div>
                       
                       {/* Delete icon (visible on hover/focus) */}

@@ -44,7 +44,7 @@ export default function EditorPage() {
     
     setIsExporting(true);
     try {
-      const filename = `${titleRef.current.trim() || "Untitled Document"}.pdf`;
+      const filename = `${titleRef.current.trim() || "Title here"}.pdf`;
       await generatePdf(editorRef.current, filename);
       setIsModalOpen(false); // Close modal on successful download
     } catch (error) {

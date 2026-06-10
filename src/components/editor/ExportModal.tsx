@@ -28,7 +28,7 @@ export default function ExportModal({
     }
   };
 
-  const finalTitle = documentTitle.trim() || "Untitled Document";
+  const finalTitle = documentTitle.trim() || "Title here";
 
   return (
     <div
