@@ -1,31 +1,27 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { IBM_Plex_Sans } from "next/font/google";
 import Script from "next/script";
 import "../globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const ibmPlex = IBM_Plex_Sans({
+  weight: ["300", "400", "500", "600", "700"],
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: "--font-ibm-plex",
 });
 
 export const metadata: Metadata = {
-  title: "Free Online Text to PDF Converter | Live Preview & Editor",
+  title: "Free Online Text to PDF Converter | Live Preview & Editor | Text to PDF",
   description:
     "Write, edit, and format text with our distraction-free WYSIWYG editor and instantly convert it to a beautifully formatted A4 PDF. 100% free, no server uploads, fully private.",
   openGraph: {
-    title: "Free Online Text to PDF Converter | Live Preview & Editor",
+    title: "Free Online Text to PDF Converter | Live Preview & Editor | Text to PDF",
     description:
       "Write, edit, and format text with our distraction-free WYSIWYG editor and instantly convert it to a beautifully formatted A4 PDF. 100% free, no server uploads, fully private.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Free Online Text to PDF Converter | Live Preview & Editor",
+    title: "Free Online Text to PDF Converter | Live Preview & Editor | Text to PDF",
     description:
       "Write, edit, and format text with our distraction-free WYSIWYG editor and instantly convert it to a beautifully formatted A4 PDF. 100% free, no server uploads, fully private.",
   },
@@ -39,10 +35,16 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${ibmPlex.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <head>
+        {/* Canonical & Hreflang SEO Tags */}
+        <link rel="canonical" href="https://vee-app.co.il/text-to-pdf" />
+        <link rel="alternate" hrefLang="en" href="https://vee-app.co.il/text-to-pdf" />
+        <link rel="alternate" hrefLang="he" href="https://vee-app.co.il/text-to-pdf/he" />
+        <link rel="alternate" hrefLang="x-default" href="https://vee-app.co.il/text-to-pdf" />
+
         {/* html2pdf.js CDN - Loaded externally to prevent Turbopack/Next.js memory leaks during bundling */}
         <Script
           src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
@@ -55,7 +57,13 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
       </head>
-      <body className="min-h-full flex flex-col" suppressHydrationWarning>{children}</body>
+      <body 
+        className="min-h-full flex flex-col" 
+        style={{ fontFamily: "var(--font-ibm-plex), system-ui, -apple-system, sans-serif" }}
+        suppressHydrationWarning
+      >
+        {children}
+      </body>
     </html>
   );
 }

@@ -60,6 +60,29 @@ export default function TipTapEditor({
   isRtl = false,
   language = "en",
 }: TipTapEditorProps) {
+  const t = {
+    en: {
+      clearConfirm: "Are you sure you want to clear the entire document? This cannot be undone.",
+      deleteConfirm: "Are you sure you want to delete this document? This action cannot be undone.",
+      historyHeader: "Document History",
+      historySub: "Saved locally in your browser",
+      newDoc: "➕ New Document",
+      emptyDoc: "Empty document",
+      editedPrefix: "Edited ",
+      active: "Active"
+    },
+    he: {
+      clearConfirm: "האם אתה בטוח שברצונך לנקות את כל המסמך? לא ניתן לשחזר פעולה זו.",
+      deleteConfirm: "האם אתה בטוח שברצונך למחוק מסמך זה? לא ניתן לשחזר פעולה זו.",
+      historyHeader: "היסטוריית מסמכים",
+      historySub: "נשמר מקומית בדפדפן שלך",
+      newDoc: "➕ מסמך חדש",
+      emptyDoc: "מסמך ריק",
+      editedPrefix: "נערך ב-",
+      active: "פעיל"
+    }
+  }[language];
+
   const [theme, setTheme] = useState<FontTheme>("font-sans");
   const [watermark, setWatermark] = useState("");
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -246,7 +269,7 @@ export default function TipTapEditor({
 
   const handleClearDocument = () => {
     if (!editor) return;
-    if (confirm("Are you sure you want to clear the entire document? This cannot be undone.")) {
+    if (confirm(t.clearConfirm)) {
       editor.commands.setContent("");
       setTitle("");
       titleRef.current = "";
@@ -355,7 +378,7 @@ export default function TipTapEditor({
   const handleDeleteDocument = (docId: string, e: React.MouseEvent) => {
     e.stopPropagation(); // Avoid loading the deleted document
 
-    if (!confirm("Are you sure you want to delete this document? This action cannot be undone.")) {
+    if (!confirm(t.deleteConfirm)) {
       return;
     }
 
@@ -565,8 +588,8 @@ export default function TipTapEditor({
             {/* Header */}
             <div className="flex items-center justify-between border-b border-slate-100 p-6">
               <div>
-                <h2 className="text-lg font-bold text-slate-900">Document History</h2>
-                <p className="text-xs text-slate-500 mt-0.5">Saved locally in your browser</p>
+                <h2 className="text-lg font-bold text-slate-900">{t.historyHeader}</h2>
+                <p className="text-xs text-slate-500 mt-0.5">{t.historySub}</p>
               </div>
               <button
                 onClick={onCloseHistory}
@@ -585,7 +608,7 @@ export default function TipTapEditor({
                 onClick={handleNewDocument}
                 className="w-full flex items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 transition-all duration-150 cursor-pointer"
               >
-                <span>➕ New Document</span>
+                <span>{t.newDoc}</span>
               </button>
             </div>
 
@@ -638,14 +661,14 @@ export default function TipTapEditor({
                     </div>
                     
                     <p className="text-xs text-slate-500 mt-1 line-clamp-2 pe-4 min-h-[2rem]">
-                      {snippet || <span className="italic text-slate-400">Empty document</span>}
+                      {snippet || <span className="italic text-slate-400">{t.emptyDoc}</span>}
                     </p>
                     
                     <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-100/50 text-[10px] text-slate-400">
-                      <span>Edited {formattedDate}</span>
+                      <span>{t.editedPrefix}{formattedDate}</span>
                       {isActive && (
                         <span className="font-medium text-indigo-600 bg-indigo-50/80 px-1.5 py-0.5 rounded">
-                          Active
+                          {t.active}
                         </span>
                       )}
                     </div>

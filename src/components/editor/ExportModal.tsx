@@ -31,10 +31,30 @@ export default function ExportModal({
   };
 
   const finalTitle = documentTitle.trim() || (language === "he" ? "כותרת כאן" : "Title here");
+  const isRtl = language === "he";
+  const t = {
+    en: {
+      yourDoc: "Your Document",
+      isReady: "is Ready!",
+      generating: "Generating...",
+      downloadPdf: "Download PDF",
+      shareWhatsApp: "Share to WhatsApp",
+      privacyDisclaimer: "Generated locally. Your data is 100% private."
+    },
+    he: {
+      yourDoc: "המסמך שלך",
+      isReady: "מוכן!",
+      generating: "מייצר...",
+      downloadPdf: "הורד PDF",
+      shareWhatsApp: "שתף ל-WhatsApp",
+      privacyDisclaimer: "נוצר מקומית במכשיר שלך. המידע שלך 100% פרטי."
+    }
+  }[language];
 
   return (
     <div
       onClick={handleBackdropClick}
+      dir={isRtl ? "rtl" : "ltr"}
       className="fixed inset-0 bg-black/55 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-200"
     >
       <div className="bg-white rounded-3xl border border-slate-100 max-w-sm w-full p-6 shadow-2xl relative flex flex-col items-center text-center animate-in fade-in zoom-in-95 duration-200">
@@ -57,14 +77,14 @@ export default function ExportModal({
         {/* Header Title with PartyPopper icon and Title Truncation */}
         <h3 className="text-xl font-extrabold text-slate-900 tracking-tight leading-snug px-1 flex flex-wrap items-center justify-center gap-x-1.5 gap-y-1 mb-5">
           <PartyPopper className="w-5 h-5 text-indigo-500 shrink-0" />
-          <span>Your Document</span>
+          <span>{t.yourDoc}</span>
           <span 
             className="inline-block max-w-[160px] align-bottom truncate text-indigo-600 font-bold"
             title={finalTitle}
           >
             &ldquo;{finalTitle}&rdquo;
           </span>
-          <span>is Ready!</span>
+          <span>{t.isReady}</span>
         </h3>
 
         {/* Actions List */}
@@ -80,12 +100,12 @@ export default function ExportModal({
             {isExporting ? (
               <>
                 <Loader2 className="w-5 h-5 animate-spin" />
-                <span>Generating...</span>
+                <span>{t.generating}</span>
               </>
             ) : (
               <>
                 <FileDown className="w-5 h-5" />
-                <span>Download PDF</span>
+                <span>{t.downloadPdf}</span>
               </>
             )}
           </button>
@@ -100,14 +120,14 @@ export default function ExportModal({
             className="w-full bg-emerald-50 hover:bg-emerald-100 disabled:opacity-55 text-emerald-700 border border-emerald-200/80 font-semibold py-3 px-4 rounded-xl transition-all flex items-center justify-center gap-2 hover:scale-[1.01] active:scale-95 duration-150 disabled:scale-100 disabled:cursor-not-allowed"
           >
             <Share2 className="w-5 h-5" />
-            <span>Share to WhatsApp</span>
+            <span>{t.shareWhatsApp}</span>
           </button>
         </div>
 
         {/* Trust Footer with Lock Icon */}
         <div className="flex items-center gap-1.5 mt-5 text-[11px] font-semibold text-slate-400 select-none">
           <Lock className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-          <span>Generated locally. Your data is 100% private.</span>
+          <span>{t.privacyDisclaimer}</span>
         </div>
         
       </div>

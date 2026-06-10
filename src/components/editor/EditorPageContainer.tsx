@@ -81,7 +81,7 @@ export default function EditorPageContainer({ language }: EditorPageContainerPro
             />
           </div>
           <h1 className="text-xl font-bold text-slate-800 tracking-tight hidden sm:block">
-            {language === "he" ? "טקסט ל-PDF" : "Text to PDF"}
+            Text to PDF
           </h1>
         </div>
         <div className="flex items-center gap-2.5">
