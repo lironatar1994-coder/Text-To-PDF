@@ -17,6 +17,7 @@ export default function LandingPage() {
         </>
       }
       subtitle="The lightning-fast, distraction-free editor that runs locally in your browser. No server uploads. No accounts required."
+      language="en"
     />
   );
 }

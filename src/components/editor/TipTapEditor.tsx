@@ -25,7 +25,6 @@ interface TipTapEditorProps {
   onCloseHistory?: () => void;
   isRtl?: boolean;
   language?: "en" | "he";
-  onLanguageChange?: (lang: "en" | "he") => void;
 }
 
 const extensions = [
@@ -60,7 +59,6 @@ export default function TipTapEditor({
   onCloseHistory,
   isRtl = false,
   language = "en",
-  onLanguageChange,
 }: TipTapEditorProps) {
   const [theme, setTheme] = useState<FontTheme>("font-sans");
   const [watermark, setWatermark] = useState("");
@@ -480,7 +478,6 @@ export default function TipTapEditor({
           setWatermark={setWatermark}
           onSelectTemplate={handleTemplateSelect}
           language={language}
-          onLanguageChange={onLanguageChange}
           onClearDocument={handleClearDocument}
         />
       </div>

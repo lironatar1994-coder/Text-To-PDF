@@ -13,7 +13,6 @@ interface EditorToolbarProps {
   setWatermark: (watermark: string) => void;
   onSelectTemplate: (template: string) => void;
   language: "en" | "he";
-  onLanguageChange?: (lang: "en" | "he") => void;
   onClearDocument: () => void;
 }
 
@@ -48,7 +47,6 @@ export function EditorToolbar({
   setWatermark,
   onSelectTemplate,
   language,
-  onLanguageChange,
   onClearDocument,
 }: EditorToolbarProps) {
   const [showMobileOptions, setShowMobileOptions] = useState(false);
@@ -225,43 +223,6 @@ export function EditorToolbar({
       className="absolute z-50 w-56 bg-white rounded-xl border border-slate-200 shadow-xl p-3.5 flex flex-col gap-3.5 animate-in fade-in duration-150 end-0 top-full mt-2"
       onClick={(e) => e.stopPropagation()}
     >
-      {/* Language Section */}
-      <div className="flex flex-col gap-1.5">
-        <span className="text-xs font-bold text-slate-700">Language / שפה</span>
-        <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200/60">
-          <button
-            onClick={() => {
-              onLanguageChange?.("en");
-              setShowSettingsPopover(false);
-            }}
-            className={cn(
-              "flex-1 text-center py-1 text-xs font-semibold rounded-md transition-all cursor-pointer",
-              language === "en"
-                ? "bg-white text-indigo-600 shadow-sm"
-                : "text-slate-500 hover:text-slate-800"
-            )}
-          >
-            English
-          </button>
-          <button
-            onClick={() => {
-              onLanguageChange?.("he");
-              setShowSettingsPopover(false);
-            }}
-            className={cn(
-              "flex-1 text-center py-1 text-xs font-semibold rounded-md transition-all cursor-pointer",
-              language === "he"
-                ? "bg-white text-indigo-600 shadow-sm"
-                : "text-slate-500 hover:text-slate-800"
-            )}
-          >
-            עברית
-          </button>
-        </div>
-      </div>
-
-      <div className="h-[1px] bg-slate-100" />
-
       {/* Action Section */}
       <div className="flex flex-col gap-1.5">
         <span className="text-xs font-bold text-slate-700">Actions</span>
@@ -365,43 +326,6 @@ export function EditorToolbar({
         {/* Settings Floating Popover */}
         {showMobileOptions && (
           <div className="absolute end-0 bottom-full mb-3 z-50 w-56 bg-white rounded-xl border border-slate-200 shadow-xl p-2 flex flex-col gap-1.5 animate-in fade-in slide-in-from-bottom-2 duration-200">
-            {/* Mobile Language Row */}
-            <div className="px-3 py-1 flex flex-col gap-1.5">
-              <span className="text-[11px] font-bold text-slate-600">Language / שפה</span>
-              <div className="flex items-center bg-slate-55 p-0.5 rounded-lg border border-slate-100">
-                <button
-                  onClick={() => {
-                    onLanguageChange?.("en");
-                    setShowMobileOptions(false);
-                  }}
-                  className={cn(
-                    "flex-1 text-center py-1 text-[11px] font-semibold rounded-md transition-all cursor-pointer",
-                    language === "en"
-                      ? "bg-white text-indigo-600 shadow-sm"
-                      : "text-slate-500 hover:text-slate-800"
-                  )}
-                >
-                  English
-                </button>
-                <button
-                  onClick={() => {
-                    onLanguageChange?.("he");
-                    setShowMobileOptions(false);
-                  }}
-                  className={cn(
-                    "flex-1 text-center py-1 text-[11px] font-semibold rounded-md transition-all cursor-pointer",
-                    language === "he"
-                      ? "bg-white text-indigo-600 shadow-sm"
-                      : "text-slate-500 hover:text-slate-800"
-                  )}
-                >
-                  עברית
-                </button>
-              </div>
-            </div>
-
-            <div className="h-[1px] bg-slate-100 mx-2" />
-
             {/* Templates Accordion */}
             <div className="flex flex-col">
               <button

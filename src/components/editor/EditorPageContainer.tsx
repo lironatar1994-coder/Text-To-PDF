@@ -13,7 +13,11 @@ const TipTapEditor = dynamic(() => import("@/components/editor/TipTapEditor"), {
   ssr: false,
 });
 
-export default function EditorPage() {
+interface EditorPageContainerProps {
+  language: "en" | "he";
+}
+
+export default function EditorPageContainer({ language }: EditorPageContainerProps) {
   const editorRef = useRef<HTMLDivElement>(null);
   const [isExporting, setIsExporting] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,23 +25,12 @@ export default function EditorPage() {
   const titleRef = useRef<string>("");
   const editorApiRef = useRef<{ getText: () => string } | null>(null);
 
-  // Hebrew RTL & Language State
-  const [language, setLanguage] = useState<"en" | "he">("en");
   const isRtl = language === "he";
 
+  // Side-effect: sync HTML dir attribute with language configuration
   useEffect(() => {
-    const savedLang = localStorage.getItem("app_language") as "en" | "he";
-    if (savedLang) {
-      setLanguage(savedLang);
-      document.documentElement.dir = savedLang === "he" ? "rtl" : "ltr";
-    }
-  }, []);
-
-  const handleLanguageChange = (lang: "en" | "he") => {
-    setLanguage(lang);
-    localStorage.setItem("app_language", lang);
-    document.documentElement.dir = lang === "he" ? "rtl" : "ltr";
-  };
+    document.documentElement.dir = language === "he" ? "rtl" : "ltr";
+  }, [language]);
 
   const handleExportPdf = async () => {
     if (!editorRef.current) return;
@@ -57,12 +50,14 @@ export default function EditorPage() {
   const handleShareWhatsApp = () => {
     const text = editorApiRef.current?.getText()?.trim();
     if (!text) {
-      alert("Your document is empty! Please write something before sharing.");
+      alert(language === "he" ? "המסמך שלך ריק! אנא כתוב משהו לפני השיתוף." : "Your document is empty! Please write something before sharing.");
       return;
     }
 
     const title = titleRef.current.trim() ? `*${titleRef.current.trim()}*\n\n` : "";
-    const promoFooter = `\n\n---\nFormatted and generated for free via Text to PDF - www.yourdomain.com`;
+    const promoFooter = language === "he" 
+      ? `\n\n---\nעוצב ונשלח בחינם דרך Text to PDF`
+      : `\n\n---\nFormatted and generated for free via Text to PDF - www.yourdomain.com`;
     const finalMessage = `${title}${text}${promoFooter}`;
     
     const encodedMessage = encodeURIComponent(finalMessage);
@@ -85,17 +80,19 @@ export default function EditorPage() {
               className="h-7 w-7 object-cover"
             />
           </div>
-          <h1 className="text-xl font-bold text-slate-800 tracking-tight hidden sm:block">Text to PDF</h1>
+          <h1 className="text-xl font-bold text-slate-800 tracking-tight hidden sm:block">
+            {language === "he" ? "טקסט ל-PDF" : "Text to PDF"}
+          </h1>
         </div>
         <div className="flex items-center gap-2.5">
           {/* History Toggle Button */}
           <button
             onClick={() => setIsHistoryOpen(true)}
             className="flex items-center gap-2 rounded-full border border-slate-200 px-4 py-2 sm:px-5 sm:py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:scale-[1.01] active:scale-95 transition-all duration-150 cursor-pointer"
-            aria-label="Open document history"
+            aria-label={language === "he" ? "פתח היסטוריית מסמכים" : "Open document history"}
           >
             <FolderOpen className="h-4 w-4 text-slate-500" />
-            <span>History</span>
+            <span>{language === "he" ? "היסטוריה" : "History"}</span>
           </button>
           
           {/* Primary Export Button */}
@@ -104,8 +101,12 @@ export default function EditorPage() {
             className="flex items-center gap-2 rounded-full bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-indigo-200 transition-all hover:bg-indigo-700 hover:shadow-lg hover:scale-[1.01] active:scale-95 duration-150 cursor-pointer"
           >
             <FileDown className="h-4 w-4" />
-            <span className="hidden sm:inline">Export PDF</span>
-            <span className="sm:hidden">Export</span>
+            <span className="hidden sm:inline">
+              {language === "he" ? "ייצוא PDF" : "Export PDF"}
+            </span>
+            <span className="sm:hidden">
+              {language === "he" ? "ייצוא" : "Export"}
+            </span>
           </button>
         </div>
       </header>
@@ -120,7 +121,6 @@ export default function EditorPage() {
           onCloseHistory={() => setIsHistoryOpen(false)}
           isRtl={isRtl}
           language={language}
-          onLanguageChange={handleLanguageChange}
         />
       </main>
 

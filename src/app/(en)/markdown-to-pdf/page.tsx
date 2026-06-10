@@ -13,6 +13,7 @@ export default function MarkdownToPdfPage() {
       h1="Convert Markdown to PDF Instantly."
       subtitle="Write in standard markdown and generate beautiful, perfectly formatted A4 PDFs right in your browser. No server uploads."
       ctaText="Start Converting Markdown"
+      language="en"
     />
   );
 }

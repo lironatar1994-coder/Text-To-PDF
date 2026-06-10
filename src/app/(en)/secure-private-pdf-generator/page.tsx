@@ -13,6 +13,7 @@ export default function SecurePrivatePdfPage() {
       h1="100% Private, Client-Side PDF Creator."
       subtitle="Your data never leaves your device. Generate sensitive invoices and documents completely offline using browser-level security."
       ctaText="Create Secure PDF"
+      language="en"
     />
   );
 }
