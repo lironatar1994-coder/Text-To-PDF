@@ -47,7 +47,7 @@ const extensions = [
 
 const editorProps = {
   attributes: {
-    className:
+    class:
       "tiptap w-full text-base sm:text-lg focus:outline-none min-h-[300px] sm:min-h-[900px] relative z-20",
   },
 };
