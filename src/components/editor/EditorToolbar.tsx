@@ -31,7 +31,7 @@ const ToolbarButton = ({
       onClick();
     }}
     className={cn(
-      "p-2 rounded-md hover:bg-indigo-50 transition-colors text-slate-600 hover:text-indigo-600 focus:outline-none focus-visible:outline-none",
+      "p-2 rounded-md hover:bg-indigo-50 transition-colors text-slate-600 hover:text-indigo-600 focus:outline-none focus-visible:outline-none shrink-0",
       isActive && "bg-indigo-100 text-indigo-700 shadow-inner"
     )}
   >
@@ -49,9 +49,6 @@ export function EditorToolbar({
   language,
   onClearDocument,
 }: EditorToolbarProps) {
-  const [showMobileOptions, setShowMobileOptions] = useState(false);
-  const [expandedSection, setExpandedSection] = useState<"templates" | "fonts" | "watermark" | null>(null);
-
   // Stamp library & Settings states
   const [showStampsPopover, setShowStampsPopover] = useState(false);
   const [showSettingsPopover, setShowSettingsPopover] = useState(false);
@@ -179,7 +176,7 @@ export function EditorToolbar({
             e.target.value = "";
           }
         }}
-        className="w-full sm:w-auto bg-white sm:bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-md focus:ring-indigo-500 focus:border-indigo-500 block p-2 cursor-pointer outline-none hover:bg-slate-50 transition-colors font-medium shadow-sm sm:shadow-none"
+        className="w-full sm:w-auto bg-white sm:bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-md focus:ring-indigo-500 focus:border-indigo-500 block p-2 cursor-pointer outline-none hover:bg-slate-50 transition-colors font-medium shadow-sm sm:shadow-none shrink-0"
       >
         <option value="">{t.templatesPlaceholder}</option>
         <option value="blank">{t.templateBlank}</option>
@@ -190,7 +187,7 @@ export function EditorToolbar({
       <select
         value={theme}
         onChange={(e) => setTheme(e.target.value as FontTheme)}
-        className="w-full sm:w-auto bg-white sm:bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-md focus:ring-indigo-500 focus:border-indigo-500 block p-2 cursor-pointer outline-none hover:bg-slate-50 transition-colors font-medium shadow-sm sm:shadow-none"
+        className="w-full sm:w-auto bg-white sm:bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-md focus:ring-indigo-500 focus:border-indigo-500 block p-2 cursor-pointer outline-none hover:bg-slate-50 transition-colors font-medium shadow-sm sm:shadow-none shrink-0"
       >
         <option value="font-sans">{t.fontSans}</option>
         <option value="font-serif">{t.fontSerif}</option>
@@ -202,17 +199,14 @@ export function EditorToolbar({
         placeholder={t.watermarkPlaceholder}
         value={watermark}
         onChange={(e) => setWatermark(e.target.value)}
-        className="w-full sm:w-28 bg-white sm:bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-md focus:ring-indigo-500 focus:border-indigo-500 block p-2 outline-none hover:bg-slate-50 transition-colors placeholder-slate-400 shadow-sm sm:shadow-none font-medium"
+        className="w-full sm:w-28 bg-white sm:bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-md focus:ring-indigo-500 focus:border-indigo-500 block p-2 outline-none hover:bg-slate-50 transition-colors placeholder-slate-400 shadow-sm sm:shadow-none font-medium shrink-0"
       />
     </>
   );
 
-  const StampsPopoverContent = ({ isMobile = false }: { isMobile?: boolean }) => (
+  const StampsPopoverContent = () => (
     <div
-      className={cn(
-        "absolute z-50 w-64 bg-white rounded-xl border border-slate-200 shadow-xl p-3 flex flex-col gap-3 animate-in fade-in duration-150",
-        isMobile ? "end-0 bottom-full mb-3" : "start-0 top-full mt-2"
-      )}
+      className="absolute z-50 w-64 bg-white rounded-xl border border-slate-200 shadow-xl p-3 flex flex-col gap-3 animate-in fade-in duration-150 end-0 bottom-full mb-3 sm:start-0 sm:top-full sm:mt-2 sm:bottom-auto sm:mb-0"
       onClick={(e) => e.stopPropagation()}
     >
       <div className="flex items-center justify-between pb-2 border-b border-slate-100">
@@ -271,7 +265,7 @@ export function EditorToolbar({
 
   const SettingsPopoverContent = () => (
     <div
-      className="absolute z-50 w-56 bg-white rounded-xl border border-slate-200 shadow-xl p-3.5 flex flex-col gap-3.5 animate-in fade-in duration-150 end-0 top-full mt-2"
+      className="absolute z-50 w-56 bg-white rounded-xl border border-slate-200 shadow-xl p-3.5 flex flex-col gap-3.5 animate-in fade-in duration-150 end-0 bottom-full mb-3 sm:top-full sm:mt-2 sm:bottom-auto sm:mb-0"
       onClick={(e) => e.stopPropagation()}
     >
       {/* Action Section */}
@@ -314,271 +308,68 @@ export function EditorToolbar({
         className="hidden"
       />
 
-      {/* 1. Mobile Redesigned Floating Toolbar Card (Single-Row UI) */}
-      <div className="sm:hidden mx-4 mb-4 bg-white rounded-2xl border border-slate-200 shadow-md flex items-center justify-between p-2 relative overflow-visible">
-        {/* Top Row: Formatting tools */}
-        <div className="flex items-center gap-1 flex-wrap">
-          <ToolbarButton onClick={() => editor.chain().focus().toggleBold().run()} isActive={editor.isActive("bold")}>
-            <Bold className="w-5 h-5" />
-          </ToolbarButton>
-          <ToolbarButton onClick={() => editor.chain().focus().toggleItalic().run()} isActive={editor.isActive("italic")}>
-            <Italic className="w-5 h-5" />
-          </ToolbarButton>
-          <div className="w-[1px] h-6 bg-slate-200 mx-1" />
-          <ToolbarButton onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()} isActive={editor.isActive("heading", { level: 1 })}>
-            <Heading1 className="w-5 h-5" />
-          </ToolbarButton>
-          <ToolbarButton onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} isActive={editor.isActive("heading", { level: 2 })}>
-            <Heading2 className="w-5 h-5" />
-          </ToolbarButton>
-          <div className="w-[1px] h-6 bg-slate-200 mx-1" />
-          <ToolbarButton onClick={() => editor.chain().focus().toggleBulletList().run()} isActive={editor.isActive("bulletList")}>
-            <List className="w-5 h-5" />
-          </ToolbarButton>
-          <ToolbarButton onClick={() => editor.chain().focus().toggleOrderedList().run()} isActive={editor.isActive("orderedList")}>
-            <ListOrdered className="w-5 h-5" />
-          </ToolbarButton>
-          
-          <div className="w-[1px] h-6 bg-slate-200 mx-1" />
-          {/* Mobile Stamp Popover */}
-          <div className="relative">
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                setShowStampsPopover(!showStampsPopover);
-              }}
-              className={cn(
-                "p-2 rounded-lg transition-all text-slate-600 hover:text-slate-800 outline-none focus:outline-none focus-visible:outline-none",
-                showStampsPopover ? "bg-indigo-50 text-indigo-600" : "bg-slate-50 hover:bg-slate-100"
-              )}
-              aria-label="Toggle stamps library"
-            >
-              <ImageIcon className="w-5 h-5" />
-            </button>
-            {showStampsPopover && <StampsPopoverContent isMobile={true} />}
-          </div>
-        </div>
-
-        {/* Settings Button */}
-        <button 
-          onClick={() => {
-            setShowMobileOptions(!showMobileOptions);
-            setExpandedSection(null);
-          }}
-          className={cn(
-            "p-2 rounded-lg transition-all text-slate-600 hover:text-slate-800 outline-none focus:outline-none focus-visible:outline-none",
-            showMobileOptions ? "bg-indigo-50 text-indigo-600" : "bg-slate-50 hover:bg-slate-100"
-          )}
-          aria-label="Toggle options"
-        >
-          <Settings2 className="w-5 h-5" />
-        </button>
-
-        {/* Settings Floating Popover */}
-        {showMobileOptions && (
-          <div className="absolute end-0 bottom-full mb-3 z-50 w-56 bg-white rounded-xl border border-slate-200 shadow-xl p-2 flex flex-col gap-1.5 animate-in fade-in slide-in-from-bottom-2 duration-200">
-            {/* Templates Accordion */}
-            <div className="flex flex-col">
-              <button
-                onClick={() => setExpandedSection(expandedSection === "templates" ? null : "templates")}
-                className="w-full flex items-center justify-between px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 rounded-lg transition-colors"
-              >
-                <span>{t.mobileTemplates}</span>
-                <ChevronDown className={cn("w-4 h-4 text-slate-400 transition-transform duration-200", expandedSection === "templates" && "rotate-180")} />
-              </button>
-              
-              {expandedSection === "templates" && (
-                <div className="flex flex-col ps-3 pe-2 py-1 gap-0.5 border-s-2 border-slate-100 ms-3 mt-0.5 animate-in fade-in slide-in-from-top-1 duration-150">
-                  <button
-                    onClick={() => {
-                      onSelectTemplate("blank");
-                      setShowMobileOptions(false);
-                    }}
-                    className="w-full text-left px-2.5 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50 hover:text-indigo-600 rounded-md transition-colors"
-                  >
-                    {t.templateBlank}
-                  </button>
-                  <button
-                    onClick={() => {
-                      onSelectTemplate("letter");
-                      setShowMobileOptions(false);
-                    }}
-                    className="w-full text-left px-2.5 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50 hover:text-indigo-600 rounded-md transition-colors"
-                  >
-                    {t.templateLetter}
-                  </button>
-                  <button
-                    onClick={() => {
-                      onSelectTemplate("invoice");
-                      setShowMobileOptions(false);
-                    }}
-                    className="w-full text-left px-2.5 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50 hover:text-indigo-600 rounded-md transition-colors"
-                  >
-                    {t.templateInvoice}
-                  </button>
-                </div>
-              )}
-            </div>
-
-            {/* Fonts Accordion */}
-            <div className="flex flex-col">
-              <button
-                onClick={() => setExpandedSection(expandedSection === "fonts" ? null : "fonts")}
-                className="w-full flex items-center justify-between px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 rounded-lg transition-colors"
-              >
-                <span>{t.mobileFonts}</span>
-                <ChevronDown className={cn("w-4 h-4 text-slate-400 transition-transform duration-200", expandedSection === "fonts" && "rotate-180")} />
-              </button>
-              
-              {expandedSection === "fonts" && (
-                <div className="flex flex-col ps-3 pe-2 py-1 gap-0.5 border-s-2 border-slate-100 ms-3 mt-0.5 animate-in fade-in slide-in-from-top-1 duration-150">
-                  <button
-                    onClick={() => {
-                      setTheme("font-sans");
-                      setShowMobileOptions(false);
-                    }}
-                    className={cn(
-                      "w-full flex items-center justify-between px-2.5 py-1.5 text-xs font-medium rounded-md transition-colors text-start",
-                      theme === "font-sans" ? "bg-indigo-50 text-indigo-600 font-semibold" : "text-slate-600 hover:bg-slate-50"
-                    )}
-                  >
-                    <span>{t.fontSans}</span>
-                    {theme === "font-sans" && <Check className="w-3.5 h-3.5" />}
-                  </button>
-                  <button
-                    onClick={() => {
-                      setTheme("font-serif");
-                      setShowMobileOptions(false);
-                    }}
-                    className={cn(
-                      "w-full flex items-center justify-between px-2.5 py-1.5 text-xs font-medium rounded-md transition-colors text-start",
-                      theme === "font-serif" ? "bg-indigo-50 text-indigo-600 font-semibold" : "text-slate-600 hover:bg-slate-50"
-                    )}
-                  >
-                    <span>{t.fontSerif}</span>
-                    {theme === "font-serif" && <Check className="w-3.5 h-3.5" />}
-                  </button>
-                  <button
-                    onClick={() => {
-                      setTheme("font-mono");
-                      setShowMobileOptions(false);
-                    }}
-                    className={cn(
-                      "w-full flex items-center justify-between px-2.5 py-1.5 text-xs font-medium rounded-md transition-colors text-start",
-                      theme === "font-mono" ? "bg-indigo-50 text-indigo-600 font-semibold" : "text-slate-600 hover:bg-slate-50"
-                    )}
-                  >
-                    <span>{t.fontMono}</span>
-                    {theme === "font-mono" && <Check className="w-3.5 h-3.5" />}
-                  </button>
-                </div>
-              )}
-            </div>
-
-            {/* Watermark Accordion */}
-            <div className="flex flex-col">
-              <button
-                onClick={() => setExpandedSection(expandedSection === "watermark" ? null : "watermark")}
-                className="w-full flex items-center justify-between px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 rounded-lg transition-colors"
-              >
-                <span>{t.mobileWatermark}</span>
-                <ChevronDown className={cn("w-4 h-4 text-slate-400 transition-transform duration-200", expandedSection === "watermark" && "rotate-180")} />
-              </button>
-              
-              {expandedSection === "watermark" && (
-                <div className="px-3 py-1.5 ms-3 mt-1 border-s-2 border-slate-100 ps-3 animate-in fade-in slide-in-from-top-1 duration-150">
-                  <input
-                    type="text"
-                    placeholder={t.watermarkMobilePlaceholder}
-                    value={watermark}
-                    onChange={(e) => setWatermark(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 text-slate-700 text-xs rounded-md block p-1.5 outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors placeholder-slate-400 shadow-sm font-medium"
-                  />
-                </div>
-              )}
-            </div>
-
-            {/* Clear Document Row */}
-            <div className="border-t border-slate-100 mt-1 pt-1.5">
-              <button
-                onClick={() => {
-                  onClearDocument();
-                  setShowMobileOptions(false);
-                }}
-                className="w-full flex items-center justify-between px-3 py-2 text-sm font-semibold text-red-600 hover:bg-red-55 rounded-lg transition-colors text-start cursor-pointer"
-              >
-                <span className="flex items-center gap-2">
-                  <Trash2 className="w-4 h-4" />
-                  <span>{t.mobileClearDoc}</span>
-                </span>
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* 2. Desktop Toolbar */}
-      <div className="hidden sm:flex flex-wrap justify-center sm:justify-start items-center gap-1 p-2 sm:bg-white border-t sm:border-t-0 sm:border-b border-slate-200 w-full sm:shadow-sm">
-        <div className="flex items-center justify-between mx-auto w-full sm:max-w-[794px] gap-2">
-          <div className="flex items-center gap-1 flex-wrap">
+      {/* Responsive unified Toolbar */}
+      <div className="flex overflow-x-auto items-center gap-1 p-2 w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] bg-white border-t sm:border-t-0 sm:border-b border-slate-200 sm:shadow-sm">
+        <div className="flex items-center justify-between mx-auto w-full sm:max-w-[794px] gap-2 shrink-0">
+          <div className="flex items-center gap-1 shrink-0">
             <ToolbarButton onClick={() => editor.chain().focus().toggleBold().run()} isActive={editor.isActive("bold")}>
-              <Bold className="w-5 h-5" />
+              <Bold className="w-5 h-5 shrink-0" />
             </ToolbarButton>
             <ToolbarButton onClick={() => editor.chain().focus().toggleItalic().run()} isActive={editor.isActive("italic")}>
-              <Italic className="w-5 h-5" />
+              <Italic className="w-5 h-5 shrink-0" />
             </ToolbarButton>
-            <div className="w-[1px] h-6 bg-slate-200 mx-1" />
+            <div className="w-[1px] h-6 bg-slate-200 mx-1 shrink-0" />
             <ToolbarButton onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()} isActive={editor.isActive("heading", { level: 1 })}>
-              <Heading1 className="w-5 h-5" />
+              <Heading1 className="w-5 h-5 shrink-0" />
             </ToolbarButton>
             <ToolbarButton onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} isActive={editor.isActive("heading", { level: 2 })}>
-              <Heading2 className="w-5 h-5" />
+              <Heading2 className="w-5 h-5 shrink-0" />
             </ToolbarButton>
-            <div className="w-[1px] h-6 bg-slate-200 mx-1" />
+            <div className="w-[1px] h-6 bg-slate-200 mx-1 shrink-0" />
             <ToolbarButton onClick={() => editor.chain().focus().toggleBulletList().run()} isActive={editor.isActive("bulletList")}>
-              <List className="w-5 h-5" />
+              <List className="w-5 h-5 shrink-0" />
             </ToolbarButton>
             <ToolbarButton onClick={() => editor.chain().focus().toggleOrderedList().run()} isActive={editor.isActive("orderedList")}>
-              <ListOrdered className="w-5 h-5" />
+              <ListOrdered className="w-5 h-5 shrink-0" />
             </ToolbarButton>
             
-            <div className="w-[1px] h-6 bg-slate-200 mx-1" />
-            {/* Desktop Stamp Popover */}
-            <div className="relative">
+            <div className="w-[1px] h-6 bg-slate-200 mx-1 shrink-0" />
+            {/* Stamp Popover */}
+            <div className="relative shrink-0">
               <button
                 onClick={(e) => {
                   e.preventDefault();
                   setShowStampsPopover(!showStampsPopover);
                 }}
                 className={cn(
-                  "p-2 rounded-md hover:bg-indigo-50 transition-colors text-slate-600 hover:text-indigo-600 focus:outline-none cursor-pointer",
+                  "p-2 rounded-md hover:bg-indigo-50 transition-colors text-slate-600 hover:text-indigo-600 focus:outline-none cursor-pointer shrink-0",
                   showStampsPopover && "bg-indigo-100 text-indigo-700 shadow-inner"
                 )}
                 title={t.stampsTooltip}
               >
-                <ImageIcon className="w-5 h-5" />
+                <ImageIcon className="w-5 h-5 shrink-0" />
               </button>
-              {showStampsPopover && <StampsPopoverContent isMobile={false} />}
+              {showStampsPopover && <StampsPopoverContent />}
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 shrink-0">
             <AdvancedOptions />
 
-            {/* Desktop Settings button */}
-            <div className="relative">
+            {/* Settings button */}
+            <div className="relative shrink-0">
               <button
                 onClick={(e) => {
                   e.preventDefault();
                   setShowSettingsPopover(!showSettingsPopover);
                 }}
                 className={cn(
-                  "p-2 rounded-md hover:bg-indigo-50 transition-all text-slate-600 hover:text-indigo-600 focus:outline-none cursor-pointer",
+                  "p-2 rounded-md hover:bg-indigo-50 transition-all text-slate-600 hover:text-indigo-600 focus:outline-none cursor-pointer shrink-0",
                   showSettingsPopover && "bg-indigo-100 text-indigo-700 shadow-inner"
                 )}
                 title={t.settingsTooltip}
               >
-                <Settings2 className="w-5 h-5" />
+                <Settings2 className="w-5 h-5 shrink-0" />
               </button>
               {showSettingsPopover && <SettingsPopoverContent />}
             </div>
