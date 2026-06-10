@@ -84,41 +84,21 @@ export default function LandingPageTemplate({
                 <span className="w-3 h-3 rounded-full bg-green-500/80 inline-block" />
               </div>
               <div className="bg-[#1e1e24] border border-slate-800/85 rounded-md text-[10px] text-slate-500 px-12 py-1 font-medium select-none truncate max-w-[200px] sm:max-w-none">
-                text-to-pdf.com/editor
+                text-to-pdf.com/demo
               </div>
               <div className="w-12" />
             </div>
             
-            {/* Stylized Editor UI representation */}
-            <div className="bg-[#18181c] p-4 flex flex-col gap-4 text-left h-[260px] sm:h-[420px] select-none pointer-events-none overflow-hidden">
-              {/* Mock formatting toolbar */}
-              <div className="bg-[#24242b] border border-slate-800 rounded-xl p-2.5 flex justify-between items-center w-full">
-                <div className="flex gap-2.5">
-                  <span className="w-5 h-5 rounded bg-slate-700/80 inline-block" />
-                  <span className="w-5 h-5 rounded bg-slate-700/80 inline-block" />
-                  <div className="w-[1px] h-5 bg-slate-800" />
-                  <span className="w-5 h-5 rounded bg-slate-700/80 inline-block" />
-                  <span className="w-5 h-5 rounded bg-slate-700/80 inline-block" />
-                </div>
-                <div className="w-8 h-8 rounded bg-slate-800 inline-block" />
-              </div>
-              
-              {/* Mock Canvas Card */}
-              <div className="bg-white rounded-xl shadow-lg border border-slate-200/50 p-6 sm:p-12 flex flex-col flex-1 relative overflow-hidden">
-                {/* Watermark diagonal */}
-                <div className="absolute inset-0 pointer-events-none flex items-center justify-center overflow-hidden opacity-5 select-none -rotate-45">
-                  <span className="text-slate-900 font-black tracking-widest text-4xl sm:text-7xl">WATERMARK</span>
-                </div>
-                {/* Title mock */}
-                <div className="w-36 sm:w-64 h-7 bg-slate-200/80 rounded mb-4" />
-                <div className="w-full h-[1px] bg-slate-100 mb-6" />
-                {/* Body text mock lines */}
-                <div className="flex flex-col gap-2.5 flex-1">
-                  <div className="w-[85%] h-4 bg-slate-100 rounded" />
-                  <div className="w-[95%] h-4 bg-slate-100 rounded" />
-                  <div className="w-[60%] h-4 bg-slate-100 rounded" />
-                </div>
-              </div>
+            {/* App Preview Video */}
+            <div className="bg-[#18181c] relative w-full aspect-video select-none overflow-hidden">
+              <video
+                src="/this_is_a_web_i_created_named.mp4"
+                className="w-full h-full object-cover"
+                autoPlay
+                loop
+                muted
+                playsInline
+              />
             </div>
           </div>
         </div>
