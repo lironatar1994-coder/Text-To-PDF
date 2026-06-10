@@ -282,3 +282,42 @@ Log saved to: C:\Users\liron\Text-To-PDF\deploy.log
 Windows PowerShell transcript end
 End time: 20260610132222
 **********************
+**********************
+Windows PowerShell transcript start
+Start time: 20260610134918
+Username: LIROM\liron
+RunAs User: LIROM\liron
+Configuration Name: 
+Machine: LIROM (Microsoft Windows NT 10.0.26200.0)
+Host Application: powershell -Command .\deploy.ps1 "Feature: Integrated IBM Plex Sans font globally, translated remaining editor UI copy to Hebrew, standardized brand name to Text to PDF, and added canonical/hreflang SEO headers"
+Process ID: 34628
+PSVersion: 5.1.26100.8457
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.8457
+BuildVersion: 10.0.26100.8457
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcript started, output file is C:\Users\liron\Text-To-PDF\deploy.log
+[0/4] Staging, committing, and pushing changes to GitHub...
+
+
+
+[1/4] Connecting to server and pulling latest git commit...
+
+[2/4] Installing dependencies...
+
+[3/4] Rebuilding Next.js application...
+
+[4/4] Restarting PM2 process...
+
+=============================================
+Deployment Completed Successfully!
+Log saved to: C:\Users\liron\Text-To-PDF\deploy.log
+=============================================
+**********************
+Windows PowerShell transcript end
+End time: 20260610134953
+**********************

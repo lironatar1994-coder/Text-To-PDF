@@ -31,7 +31,7 @@ const translations = {
     allRightsReserved: "All rights reserved.",
   },
   he: {
-    logoText: "טקסט ל-PDF",
+    logoText: "Text to PDF",
     openEditor: "פתח את העורך",
     defaultCta: "פתח את העורך החינמי",
     demoUrl: "text-to-pdf.co.il/demo",

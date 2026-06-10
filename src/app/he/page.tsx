@@ -3,8 +3,8 @@ import type { Metadata } from "next";
 import LandingPageTemplate from "@/components/layout/LandingPageTemplate";
 
 export const metadata: Metadata = {
-  title: "מחולל PDF מקומי ומהיר בעברית | Text to PDF",
-  description: "המרת טקסט למסמכי PDF מעוצבים בגודל A4 באופן מיידי ובאופן מקומי לחלוטין בדפדפן שלך. ללא העלאת קבצים וללא הרשמה.",
+  title: "Text to PDF | עורך מסמכים מינימלי לייצוא PDF",
+  description: "ערוך טקסט ועצב מסמכי A4 PDF ישירות בדפדפן באופן מקומי ומאובטח לחלוטין. ללא הרשמה וללא העלאת קבצים לשרת.",
 };
 
 export default function HebrewLandingPage() {
@@ -12,11 +12,11 @@ export default function HebrewLandingPage() {
     <LandingPageTemplate
       h1={
         <>
-          הפוך טקסט לקבצי <br className="hidden sm:inline" />
-          PDF מעוצבים ומקצועיים.
+          כתוב טקסט. <br className="hidden sm:inline" />
+          ייצא קובצי PDF מעוצבים.
         </>
       }
-      subtitle="עורך מהיר במיוחד, ללא הסחות דעת, הפועל ישירות ומקומית בדפדפן שלך. ללא העלאת קבצים לשרתים וללא צורך ברישום."
+      subtitle="עורך מסמכים מינימליסטי הפועל ישירות ובאופן מקומי בדפדפן. ללא הרשמה, ללא שרתים, 100% פרטי."
       ctaText="פתח את העורך החינמי"
       language="he"
     />
