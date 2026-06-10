@@ -53,7 +53,9 @@ export default function EditorPageContainer({ language }: EditorPageContainerPro
     if (typeof window === "undefined" || !window.visualViewport) return;
 
     const handleResize = () => {
-      setViewportHeight(`${window.visualViewport.height}px`);
+      if (window.visualViewport) {
+        setViewportHeight(`${window.visualViewport.height}px`);
+      }
     };
 
     window.visualViewport.addEventListener("resize", handleResize);
