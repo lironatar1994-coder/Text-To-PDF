@@ -487,7 +487,7 @@ export default function TipTapEditor({
   };
 
   return (
-    <div className="flex flex-col w-full h-full overflow-hidden">
+    <div className="flex flex-col w-full flex-grow">
       {/* Visually Hidden SEO H1 Header */}
       <h1 className="sr-only">Free Online Text to PDF Converter</h1>
 

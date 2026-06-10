@@ -24,53 +24,8 @@ export default function EditorPageContainer({ language }: EditorPageContainerPro
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const titleRef = useRef<string>("");
   const editorApiRef = useRef<{ getText: () => string } | null>(null);
-  const [viewportHeight, setViewportHeight] = useState("100dvh");
 
   const isRtl = language === "he";
-
-  // Lock HTML and Body scrolling to prevent mobile viewport shifting when keyboard is active
-  useEffect(() => {
-    const originalHtmlOverflow = document.documentElement.style.overflow;
-    const originalHtmlHeight = document.documentElement.style.height;
-    const originalBodyOverflow = document.body.style.overflow;
-    const originalBodyHeight = document.body.style.height;
-
-    document.documentElement.style.overflow = "hidden";
-    document.documentElement.style.height = "100%";
-    document.body.style.overflow = "hidden";
-    document.body.style.height = "100%";
-
-    return () => {
-      document.documentElement.style.overflow = originalHtmlOverflow;
-      document.documentElement.style.height = originalHtmlHeight;
-      document.body.style.overflow = originalBodyOverflow;
-      document.body.style.height = originalBodyHeight;
-    };
-  }, []);
-
-  // Listen to visual viewport changes (e.g. keyboard popping up) and adjust container height
-  useEffect(() => {
-    if (typeof window === "undefined" || !window.visualViewport) return;
-
-    const handleResize = () => {
-      if (window.visualViewport) {
-        setViewportHeight(`${window.visualViewport.height}px`);
-      }
-    };
-
-    window.visualViewport.addEventListener("resize", handleResize);
-    window.visualViewport.addEventListener("scroll", handleResize);
-    
-    // Initial measure
-    handleResize();
-
-    return () => {
-      if (window.visualViewport) {
-        window.visualViewport.removeEventListener("resize", handleResize);
-        window.visualViewport.removeEventListener("scroll", handleResize);
-      }
-    };
-  }, []);
 
   // Side-effect: sync HTML dir attribute with language configuration
   useEffect(() => {
@@ -112,10 +67,7 @@ export default function EditorPageContainer({ language }: EditorPageContainerPro
   };
 
   return (
-    <div 
-      className="flex flex-col overflow-hidden bg-slate-50 font-sans"
-      style={{ height: viewportHeight }}
-    >
+    <div className="flex flex-col h-dvh bg-slate-50 font-sans">
       {/* Header */}
       <header className="shrink-0 flex h-16 items-center justify-between border-b border-slate-200 bg-white px-4 sm:px-6 z-10 shadow-sm">
         <div className="flex items-center gap-2">
