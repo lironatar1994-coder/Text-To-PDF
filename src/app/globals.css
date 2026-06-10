@@ -64,9 +64,9 @@
 }
 
 /* TipTap Placeholder styling */
-.tiptap p.is-editor-empty:first-child::before {
+.tiptap.is-editor-empty p:first-child::before {
   content: attr(data-placeholder);
-  float: left;
+  float: inline-start;
   color: #94a3b8; /* slate-400 */
   pointer-events: none;
   height: 0;
