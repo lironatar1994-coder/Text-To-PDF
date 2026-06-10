@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
@@ -491,8 +492,8 @@ export default function TipTapEditor({
       {/* Visually Hidden SEO H1 Header */}
       <h1 className="sr-only">Free Online Text to PDF Converter</h1>
 
-      {/* Toolbar is ordered to the top on desktop, bottom on mobile */}
-      <div className="order-2 sm:order-1 shrink-0 z-30">
+      {/* Desktop toolbar — normal flow, above the editor */}
+      <div className="hidden sm:block shrink-0 z-30">
         <EditorToolbar
           editor={editor}
           theme={theme}
@@ -505,8 +506,37 @@ export default function TipTapEditor({
         />
       </div>
 
+      {/* Mobile toolbar — rendered via Portal directly into body to escape all stacking contexts */}
+      {typeof window !== "undefined" && createPortal(
+        <div
+          className="sm:hidden"
+          style={{
+            position: "fixed",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            zIndex: 9999,
+            backgroundColor: "#ffffff",
+            boxShadow: "0 -2px 16px 0 rgba(0,0,0,0.12)",
+            paddingBottom: "env(safe-area-inset-bottom, 0px)",
+          }}
+        >
+          <EditorToolbar
+            editor={editor}
+            theme={theme}
+            setTheme={setTheme}
+            watermark={watermark}
+            setWatermark={setWatermark}
+            onSelectTemplate={handleTemplateSelect}
+            language={language}
+            onClearDocument={handleClearDocument}
+          />
+        </div>,
+        document.body
+      )}
+
       {/* The scrolling editor content area */}
-      <div className="order-1 sm:order-2 flex-1 overflow-y-auto w-full flex flex-col items-center py-0 sm:py-8 px-0 sm:px-4 z-10 bg-gradient-to-br from-indigo-50/60 via-slate-50 to-sky-50/40">
+      <div className="flex-1 overflow-y-auto w-full flex flex-col items-center py-0 sm:py-8 px-0 sm:px-4 pb-32 sm:pb-8 z-10 bg-gradient-to-br from-indigo-50/60 via-slate-50 to-sky-50/40">
         
         {/* A4 Paper Editor */}
         <div
