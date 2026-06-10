@@ -92,7 +92,7 @@ export default function LandingPageTemplate({
             {/* App Preview Video */}
             <div className="bg-[#18181c] relative w-full aspect-video select-none overflow-hidden">
               <video
-                src="/this_is_a_web_i_created_named.mp4"
+                src="/text-to-pdf/this_is_a_web_i_created_named.mp4"
                 className="w-full h-full object-cover"
                 autoPlay
                 loop
