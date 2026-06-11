@@ -5,6 +5,8 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import Image from "@tiptap/extension-image";
+import Underline from "@tiptap/extension-underline";
+import TextAlign from "@tiptap/extension-text-align";
 import { EditorToolbar, type FontTheme } from "./EditorToolbar";
 import AdBannerPlaceholder from "@/components/layout/AdBannerPlaceholder";
 import { Trash2 } from "lucide-react";
@@ -41,6 +43,10 @@ const extensions = [
     HTMLAttributes: {
       class: "max-w-full h-auto inline-block rounded-md my-2 border border-slate-200",
     },
+  }),
+  Underline,
+  TextAlign.configure({
+    types: ["heading", "paragraph"],
   }),
 ];
 
@@ -523,12 +529,12 @@ export default function TipTapEditor({
       </div>
 
       {/* The scrolling editor content area */}
-      <div className="flex-1 overflow-y-auto w-full flex flex-col items-center py-0 sm:py-8 px-0 sm:px-4 pb-32 sm:pb-8 z-10 bg-gradient-to-br from-indigo-50/60 via-slate-50 to-sky-50/40">
+      <div className="flex-1 overflow-y-auto w-full flex flex-col items-center py-0 sm:py-8 px-0 sm:px-4 pb-32 sm:pb-8 z-10 bg-slate-50">
         
         {/* A4 Paper Editor */}
         <div
           ref={editorRef}
-          className={`relative bg-white w-full sm:max-w-[794px] sm:shadow-lg sm:rounded-sm sm:border sm:border-slate-200 flex flex-col shrink-0 h-fit min-h-[70vh] sm:min-h-[1123px] p-6 sm:p-16 sm:mb-12 transition-colors overflow-hidden ${theme}`}
+          className={`relative bg-white w-full sm:max-w-[794px] sm:shadow-xl sm:rounded-sm sm:border sm:border-gray-200 flex flex-col shrink-0 h-fit min-h-[70vh] sm:min-h-[1123px] p-6 sm:p-16 sm:mb-12 transition-colors overflow-hidden ${theme}`}
         >
           {/* Watermark Overlay Layer */}
           {watermark.trim() && (

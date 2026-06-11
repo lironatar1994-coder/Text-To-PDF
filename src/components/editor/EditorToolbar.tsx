@@ -1,5 +1,21 @@
 import { type Editor } from "@tiptap/react";
-import { Bold, Italic, Heading1, Heading2, List, ListOrdered, Settings2, ChevronDown, Check, Trash2, Image as ImageIcon } from "lucide-react";
+import {
+  Bold,
+  Italic,
+  Underline,
+  Quote,
+  List,
+  ListOrdered,
+  Settings2,
+  ChevronDown,
+  Check,
+  Trash2,
+  Image as ImageIcon,
+  AlignLeft,
+  AlignCenter,
+  AlignRight,
+  AlignJustify
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState, useRef, useEffect } from "react";
 
@@ -49,9 +65,10 @@ export function EditorToolbar({
   language,
   onClearDocument,
 }: EditorToolbarProps) {
-  // Stamp library & Settings states
+  // States
   const [showStampsPopover, setShowStampsPopover] = useState(false);
   const [showSettingsPopover, setShowSettingsPopover] = useState(false);
+  const [showAlignPopover, setShowAlignPopover] = useState(false);
   const [savedStamps, setSavedStamps] = useState<{ id: string; src: string }[]>([]);
   
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -80,6 +97,15 @@ export function EditorToolbar({
       mobileClearDoc: "Clear Document",
       stampsTooltip: "Stamps / Signatures",
       settingsTooltip: "Settings",
+      styleNormal: "Normal Text",
+      styleH1: "Heading 1",
+      styleH2: "Heading 2",
+      styleH3: "Heading 3",
+      alignLeft: "Align Left",
+      alignCenter: "Align Center",
+      alignRight: "Align Right",
+      alignJustify: "Align Justify",
+      alignTooltip: "Align Text",
     },
     he: {
       templatesPlaceholder: "תבניות...",
@@ -104,8 +130,47 @@ export function EditorToolbar({
       mobileClearDoc: "נקה מסמך",
       stampsTooltip: "חותמות / חתימות",
       settingsTooltip: "הגדרות",
+      styleNormal: "טקסט רגיל",
+      styleH1: "כותרת 1",
+      styleH2: "כותרת 2",
+      styleH3: "כותרת 3",
+      alignLeft: "יישור לשמאל",
+      alignCenter: "יישור למרכז",
+      alignRight: "יישור לימין",
+      alignJustify: "יישור דו-צדדי",
+      alignTooltip: "יישור טקסט",
     }
   }[language];
+
+  // Helper functions for formatting active states
+  const getActiveStyle = () => {
+    if (!editor) return "p";
+    if (editor.isActive("heading", { level: 1 })) return "h1";
+    if (editor.isActive("heading", { level: 2 })) return "h2";
+    if (editor.isActive("heading", { level: 3 })) return "h3";
+    return "p";
+  };
+
+  const handleStyleChange = (val: string) => {
+    if (!editor) return;
+    if (val === "p") {
+      editor.chain().focus().setParagraph().run();
+    } else if (val === "h1") {
+      editor.chain().focus().toggleHeading({ level: 1 }).run();
+    } else if (val === "h2") {
+      editor.chain().focus().toggleHeading({ level: 2 }).run();
+    } else if (val === "h3") {
+      editor.chain().focus().toggleHeading({ level: 3 }).run();
+    }
+  };
+
+  const getActiveAlign = () => {
+    if (!editor) return "left";
+    if (editor.isActive({ textAlign: "center" })) return "center";
+    if (editor.isActive({ textAlign: "right" })) return "right";
+    if (editor.isActive({ textAlign: "justify" })) return "justify";
+    return "left";
+  };
 
   // Load stamps from localStorage on mount
   useEffect(() => {
@@ -167,42 +232,7 @@ export function EditorToolbar({
     reader.readAsDataURL(file);
   };
 
-  const AdvancedOptions = () => (
-    <>
-      <select
-        onChange={(e) => {
-          if (e.target.value) {
-            onSelectTemplate(e.target.value);
-            e.target.value = "";
-          }
-        }}
-        className="w-full sm:w-auto bg-white sm:bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-md focus:ring-indigo-500 focus:border-indigo-500 block p-2 cursor-pointer outline-none hover:bg-slate-50 transition-colors font-medium shadow-sm sm:shadow-none shrink-0"
-      >
-        <option value="">{t.templatesPlaceholder}</option>
-        <option value="blank">{t.templateBlank}</option>
-        <option value="letter">{t.templateLetter}</option>
-        <option value="invoice">{t.templateInvoice}</option>
-      </select>
 
-      <select
-        value={theme}
-        onChange={(e) => setTheme(e.target.value as FontTheme)}
-        className="w-full sm:w-auto bg-white sm:bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-md focus:ring-indigo-500 focus:border-indigo-500 block p-2 cursor-pointer outline-none hover:bg-slate-50 transition-colors font-medium shadow-sm sm:shadow-none shrink-0"
-      >
-        <option value="font-sans">{t.fontSans}</option>
-        <option value="font-serif">{t.fontSerif}</option>
-        <option value="font-mono">{t.fontMono}</option>
-      </select>
-
-      <input
-        type="text"
-        placeholder={t.watermarkPlaceholder}
-        value={watermark}
-        onChange={(e) => setWatermark(e.target.value)}
-        className="w-full sm:w-28 bg-white sm:bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-md focus:ring-indigo-500 focus:border-indigo-500 block p-2 outline-none hover:bg-slate-50 transition-colors placeholder-slate-400 shadow-sm sm:shadow-none font-medium shrink-0"
-      />
-    </>
-  );
 
   const StampsPopoverContent = () => (
     <div
@@ -265,9 +295,54 @@ export function EditorToolbar({
 
   const SettingsPopoverContent = () => (
     <div
-      className="absolute z-50 w-56 bg-white rounded-xl border border-slate-200 shadow-xl p-3.5 flex flex-col gap-3.5 animate-in fade-in duration-150 end-0 bottom-full mb-3 sm:top-full sm:mt-2 sm:bottom-auto sm:mb-0"
+      className="absolute z-50 w-64 bg-white rounded-xl border border-slate-200 shadow-xl p-4 flex flex-col gap-4 animate-in fade-in duration-150 end-0 bottom-full mb-3 sm:top-full sm:mt-2 sm:bottom-auto sm:mb-0"
       onClick={(e) => e.stopPropagation()}
     >
+      <div className="flex flex-col gap-2">
+        <span className="text-xs font-bold text-slate-700">{t.settingsTooltip}</span>
+        
+        {/* Templates */}
+        <select
+          onChange={(e) => {
+            if (e.target.value) {
+              onSelectTemplate(e.target.value);
+              e.target.value = "";
+              setShowSettingsPopover(false);
+            }
+          }}
+          className="w-full bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-md focus:ring-indigo-500 focus:border-indigo-500 block p-2 cursor-pointer outline-none hover:bg-slate-100 transition-colors font-medium shadow-sm"
+        >
+          <option value="">{t.templatesPlaceholder}</option>
+          <option value="blank">{t.templateBlank}</option>
+          <option value="letter">{t.templateLetter}</option>
+          <option value="invoice">{t.templateInvoice}</option>
+        </select>
+
+        {/* Font Theme */}
+        <select
+          value={theme}
+          onChange={(e) => {
+             setTheme(e.target.value as FontTheme);
+          }}
+          className="w-full bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-md focus:ring-indigo-500 focus:border-indigo-500 block p-2 cursor-pointer outline-none hover:bg-slate-100 transition-colors font-medium shadow-sm"
+        >
+          <option value="font-sans">{t.fontSans}</option>
+          <option value="font-serif">{t.fontSerif}</option>
+          <option value="font-mono">{t.fontMono}</option>
+        </select>
+
+        {/* Watermark */}
+        <input
+          type="text"
+          placeholder={t.watermarkPlaceholder}
+          value={watermark}
+          onChange={(e) => setWatermark(e.target.value)}
+          className="w-full bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-md focus:ring-indigo-500 focus:border-indigo-500 block p-2 outline-none hover:bg-slate-100 transition-colors placeholder-slate-400 shadow-sm font-medium"
+        />
+      </div>
+
+      <div className="h-px w-full bg-slate-100" />
+
       {/* Action Section */}
       <div className="flex flex-col gap-1.5">
         <span className="text-xs font-bold text-slate-700">{t.actionsHeader}</span>
@@ -277,7 +352,7 @@ export function EditorToolbar({
             onClearDocument();
             setShowSettingsPopover(false);
           }}
-          className="w-full bg-red-55 hover:bg-red-100 text-red-600 border border-red-200/40 font-semibold py-2 text-xs rounded-lg transition-all flex items-center justify-center gap-1.5 shadow-sm active:scale-95 duration-100 cursor-pointer"
+          className="w-full bg-red-50 hover:bg-red-100 text-red-600 border border-red-200/40 font-semibold py-2 text-xs rounded-lg transition-all flex items-center justify-center gap-1.5 shadow-sm active:scale-95 duration-100 cursor-pointer"
         >
           <Trash2 className="w-3.5 h-3.5" />
           <span>{t.clearCanvasBtn}</span>
@@ -286,15 +361,24 @@ export function EditorToolbar({
     </div>
   );
 
+  const activeAlign = getActiveAlign();
+  const AlignIcon = {
+    left: AlignLeft,
+    center: AlignCenter,
+    right: AlignRight,
+    justify: AlignJustify,
+  }[activeAlign] || AlignLeft;
+
   return (
     <div className="flex flex-col w-full bg-transparent sm:bg-transparent z-30 relative">
       {/* Click-away backdrop for popovers */}
-      {(showStampsPopover || showSettingsPopover) && (
+      {(showStampsPopover || showSettingsPopover || showAlignPopover) && (
         <div
           className="fixed inset-0 z-40 bg-transparent"
           onClick={() => {
             setShowStampsPopover(false);
             setShowSettingsPopover(false);
+            setShowAlignPopover(false);
           }}
         />
       )}
@@ -309,31 +393,123 @@ export function EditorToolbar({
       />
 
       {/* Responsive unified Toolbar */}
-      <div className="flex overflow-x-auto items-center gap-1 p-2 w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] bg-white border-t sm:border-t-0 sm:border-b border-slate-200 sm:shadow-sm">
-        <div className="flex items-center justify-between mx-auto w-full sm:max-w-[794px] gap-2 shrink-0">
-          <div className="flex items-center gap-1 shrink-0">
+      <div className="flex flex-wrap items-center gap-2 p-2 w-full bg-white border-t sm:border-t-0 sm:border-b border-slate-200 sm:shadow-sm">
+        <div className="flex flex-wrap items-center justify-between mx-auto w-full sm:max-w-[794px] gap-2">
+          <div className="flex flex-wrap items-center gap-1">
+            {/* Style Dropdown */}
+            <select
+              value={getActiveStyle()}
+              onChange={(e) => handleStyleChange(e.target.value)}
+              className="bg-slate-50 border border-slate-200 text-slate-700 text-xs sm:text-sm rounded-md focus:ring-indigo-500 focus:border-indigo-500 block p-1.5 sm:p-2 cursor-pointer outline-none hover:bg-slate-100 transition-colors font-semibold shadow-sm sm:shadow-none shrink-0"
+            >
+              <option value="p">{t.styleNormal}</option>
+              <option value="h1">{t.styleH1}</option>
+              <option value="h2">{t.styleH2}</option>
+              <option value="h3">{t.styleH3}</option>
+            </select>
+
+            <div className="w-[1px] h-6 bg-slate-200 mx-1 shrink-0" />
+
             <ToolbarButton onClick={() => editor.chain().focus().toggleBold().run()} isActive={editor.isActive("bold")}>
               <Bold className="w-5 h-5 shrink-0" />
             </ToolbarButton>
             <ToolbarButton onClick={() => editor.chain().focus().toggleItalic().run()} isActive={editor.isActive("italic")}>
               <Italic className="w-5 h-5 shrink-0" />
             </ToolbarButton>
-            <div className="w-[1px] h-6 bg-slate-200 mx-1 shrink-0" />
-            <ToolbarButton onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()} isActive={editor.isActive("heading", { level: 1 })}>
-              <Heading1 className="w-5 h-5 shrink-0" />
+            <ToolbarButton onClick={() => editor.chain().focus().toggleUnderline().run()} isActive={editor.isActive("underline")}>
+              <Underline className="w-5 h-5 shrink-0" />
             </ToolbarButton>
-            <ToolbarButton onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} isActive={editor.isActive("heading", { level: 2 })}>
-              <Heading2 className="w-5 h-5 shrink-0" />
-            </ToolbarButton>
+
             <div className="w-[1px] h-6 bg-slate-200 mx-1 shrink-0" />
+
             <ToolbarButton onClick={() => editor.chain().focus().toggleBulletList().run()} isActive={editor.isActive("bulletList")}>
               <List className="w-5 h-5 shrink-0" />
             </ToolbarButton>
             <ToolbarButton onClick={() => editor.chain().focus().toggleOrderedList().run()} isActive={editor.isActive("orderedList")}>
               <ListOrdered className="w-5 h-5 shrink-0" />
             </ToolbarButton>
+            <ToolbarButton onClick={() => editor.chain().focus().toggleBlockquote().run()} isActive={editor.isActive("blockquote")}>
+              <Quote className="w-5 h-5 shrink-0" />
+            </ToolbarButton>
             
             <div className="w-[1px] h-6 bg-slate-200 mx-1 shrink-0" />
+            
+            {/* Alignment Popover */}
+            <div className="relative shrink-0">
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  setShowAlignPopover(!showAlignPopover);
+                }}
+                className={cn(
+                  "p-2 rounded-md hover:bg-indigo-50 transition-colors text-slate-600 hover:text-indigo-600 focus:outline-none cursor-pointer shrink-0",
+                  showAlignPopover && "bg-indigo-100 text-indigo-700 shadow-inner"
+                )}
+                title={t.alignTooltip}
+              >
+                <AlignIcon className="w-5 h-5 shrink-0" />
+              </button>
+              {showAlignPopover && (
+                <div
+                  className="absolute z-50 bg-white rounded-xl border border-slate-200 shadow-xl p-1 flex gap-1 animate-in fade-in duration-100 end-0 bottom-full mb-3 sm:start-0 sm:top-full sm:mt-2 sm:bottom-auto sm:mb-0 animate-out fade-out"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <button
+                    onClick={() => {
+                      editor.chain().focus().setTextAlign("left").run();
+                      setShowAlignPopover(false);
+                    }}
+                    className={cn(
+                      "p-1.5 rounded hover:bg-indigo-50 transition-colors text-slate-600 hover:text-indigo-600 cursor-pointer",
+                      activeAlign === "left" && "bg-indigo-100 text-indigo-700 shadow-inner"
+                    )}
+                    title={t.alignLeft}
+                  >
+                    <AlignLeft className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => {
+                      editor.chain().focus().setTextAlign("center").run();
+                      setShowAlignPopover(false);
+                    }}
+                    className={cn(
+                      "p-1.5 rounded hover:bg-indigo-50 transition-colors text-slate-600 hover:text-indigo-600 cursor-pointer",
+                      activeAlign === "center" && "bg-indigo-100 text-indigo-700 shadow-inner"
+                    )}
+                    title={t.alignCenter}
+                  >
+                    <AlignCenter className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => {
+                      editor.chain().focus().setTextAlign("right").run();
+                      setShowAlignPopover(false);
+                    }}
+                    className={cn(
+                      "p-1.5 rounded hover:bg-indigo-50 transition-colors text-slate-600 hover:text-indigo-600 cursor-pointer",
+                      activeAlign === "right" && "bg-indigo-100 text-indigo-700 shadow-inner"
+                    )}
+                    title={t.alignRight}
+                  >
+                    <AlignRight className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => {
+                      editor.chain().focus().setTextAlign("justify").run();
+                      setShowAlignPopover(false);
+                    }}
+                    className={cn(
+                      "p-1.5 rounded hover:bg-indigo-50 transition-colors text-slate-600 hover:text-indigo-600 cursor-pointer",
+                      activeAlign === "justify" && "bg-indigo-100 text-indigo-700 shadow-inner"
+                    )}
+                    title={t.alignJustify}
+                  >
+                    <AlignJustify className="w-4 h-4" />
+                  </button>
+                </div>
+              )}
+            </div>
+
             {/* Stamp Popover */}
             <div className="relative shrink-0">
               <button
@@ -353,10 +529,7 @@ export function EditorToolbar({
             </div>
           </div>
 
-          <div className="flex items-center gap-2 shrink-0">
-            <AdvancedOptions />
-
-            {/* Settings button */}
+          <div className="flex items-center gap-2 ml-auto">            {/* Settings button */}
             <div className="relative shrink-0">
               <button
                 onClick={(e) => {
@@ -373,9 +546,9 @@ export function EditorToolbar({
               </button>
               {showSettingsPopover && <SettingsPopoverContent />}
             </div>
-          </div>
         </div>
       </div>
     </div>
-  );
+  </div>
+);
 }

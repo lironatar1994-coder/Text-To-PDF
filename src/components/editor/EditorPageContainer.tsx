@@ -69,7 +69,7 @@ export default function EditorPageContainer({ language }: EditorPageContainerPro
   return (
     <div className="flex flex-col h-dvh bg-slate-50 font-sans">
       {/* Header */}
-      <header className="shrink-0 flex h-16 items-center justify-between border-b border-slate-200 bg-white px-4 sm:px-6 z-10 shadow-sm">
+      <header className="shrink-0 flex h-14 items-center justify-between border-b border-slate-200 bg-white px-4 sm:px-6 z-10 shadow-sm">
         <div className="flex items-center gap-2">
           <div className="overflow-hidden rounded-lg border border-slate-200">
             <Image 
