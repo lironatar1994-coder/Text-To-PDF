@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { createPortal } from "react-dom";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
@@ -506,34 +505,22 @@ export default function TipTapEditor({
         />
       </div>
 
-      {/* Mobile toolbar — rendered via Portal directly into body to escape all stacking contexts */}
-      {typeof window !== "undefined" && createPortal(
-        <div
-          className="sm:hidden"
-          style={{
-            position: "fixed",
-            bottom: 0,
-            left: 0,
-            right: 0,
-            zIndex: 9999,
-            backgroundColor: "#ffffff",
-            boxShadow: "0 -2px 16px 0 rgba(0,0,0,0.12)",
-            paddingBottom: "env(safe-area-inset-bottom, 0px)",
-          }}
-        >
-          <EditorToolbar
-            editor={editor}
-            theme={theme}
-            setTheme={setTheme}
-            watermark={watermark}
-            setWatermark={setWatermark}
-            onSelectTemplate={handleTemplateSelect}
-            language={language}
-            onClearDocument={handleClearDocument}
-          />
-        </div>,
-        document.body
-      )}
+      {/* Mobile toolbar — rendered with fixed positioning at the bottom */}
+      <div
+        className="sm:hidden fixed bottom-0 left-0 right-0 z-[9999] bg-white shadow-[0_-2px_16px_0_rgba(0,0,0,0.12)]"
+        style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
+      >
+        <EditorToolbar
+          editor={editor}
+          theme={theme}
+          setTheme={setTheme}
+          watermark={watermark}
+          setWatermark={setWatermark}
+          onSelectTemplate={handleTemplateSelect}
+          language={language}
+          onClearDocument={handleClearDocument}
+        />
+      </div>
 
       {/* The scrolling editor content area */}
       <div className="flex-1 overflow-y-auto w-full flex flex-col items-center py-0 sm:py-8 px-0 sm:px-4 pb-32 sm:pb-8 z-10 bg-gradient-to-br from-indigo-50/60 via-slate-50 to-sky-50/40">
