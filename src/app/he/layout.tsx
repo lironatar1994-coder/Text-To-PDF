@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Sans_Hebrew } from "next/font/google";
 import Script from "next/script";
+import VisitorSignal from "@/components/VisitorSignal";
 import "../globals.css";
 
 const ibmPlex = IBM_Plex_Sans_Hebrew({
@@ -49,6 +50,7 @@ export default function HebrewRootLayout({
         style={{ fontFamily: "var(--font-ibm-plex), system-ui, -apple-system, sans-serif" }}
         suppressHydrationWarning
       >
+        <VisitorSignal />
         {children}
       </body>
     </html>
